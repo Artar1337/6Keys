@@ -3,11 +3,11 @@
     package="ru.sibsutis.a6keys">
 
     <application
-        android:screenOrientation="landscape"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:screenOrientation="landscape"
         android:supportsRtl="true"
         android:theme="@style/Theme.6Keys">
         <activity android:name=".MainActivity">

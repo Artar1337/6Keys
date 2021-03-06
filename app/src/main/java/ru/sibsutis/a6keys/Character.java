@@ -38,12 +38,16 @@ public class Character {
     //ширина и высота куска спрайта, который режем
     private final int width;
     private final int height;
+    //нужны для того, чтобы персоваж шел примерно к центру головы,
+    //а не к левому верхнему углу
+    private final int headCenterX;
+    private final int headCenterY;
 
     public int destX;
     public int destY;
     public int x;
     public int y;
-    public final int TapRadius=100;
+    public final int TapRadius;
 
 
     public Character(GameScreen gameSurface, Bitmap image, int x, int y) {
@@ -51,10 +55,15 @@ public class Character {
         this.image = image;
         this.x = x;
         this.y = y;
-        destX=x;
-        destY=y;
-        this.width = image.getWidth() / colCount;
-        this.height = image.getHeight() / rowCount;
+
+        destX = x;
+        destY = y;
+        width = image.getWidth() / colCount;
+        height = image.getHeight() / rowCount;
+
+        headCenterX = width / 2;
+        headCenterY = height / 3;
+        TapRadius = headCenterX;
 
         this.gameSurface = gameSurface;
 
@@ -98,22 +107,21 @@ public class Character {
     }
 
 
-    public boolean shouldRun()
-    {
-        Log.wtf("niggers",Math.abs(x-destX)+","+Math.abs(y-destY));
-        return (Math.abs(x-destX)<TapRadius
-                && Math.abs(y-destY)<TapRadius);
+    public boolean shouldRun() {
+        return (Math.abs(x - destX + headCenterX) < TapRadius
+                && Math.abs(y - destY + headCenterY) < TapRadius);
     }
 
     public void update() {
 
-        if(shouldRun())
-        {
-            this.colUsing=1;
-            this.rowUsing=ROW_TOP_TO_BOTTOM;
+        //если стоим на месте - ставим спрайт
+        //стоящего лицом вперед парня
+        if (shouldRun()) {
+            this.colUsing = 1;
+            this.rowUsing = ROW_TOP_TO_BOTTOM;
             return;
         }
-        Log.wtf("what1","is this");
+
         long now = System.nanoTime();
 
         // Первый раз рисуем спрайт
@@ -126,29 +134,24 @@ public class Character {
         float distance = VELOCITY * deltaTime;
 
         double movingVectorLength = Math.sqrt(movingVectorX * movingVectorX + movingVectorY * movingVectorY);
-        if(Double.compare(movingVectorLength,0.0)==0){
+        if (Double.compare(movingVectorLength, 0.0) == 0) {
             return;
         }
-        Log.wtf("what2","is this");
 
 
         this.x = x + (int) (distance * movingVectorX / movingVectorLength);
         this.y = y + (int) (distance * movingVectorY / movingVectorLength);
 
         if (this.x < 0) {
-            this.x = 0;
-            this.movingVectorX = -this.movingVectorX;
+            this.destX = this.x;
         } else if (this.x > this.gameSurface.getWidth() - width) {
-            this.x = this.gameSurface.getWidth() - width;
-            this.movingVectorX = -this.movingVectorX;
+            this.destX = this.x;
         }
 
         if (this.y < 0) {
-            this.y = 0;
-            this.movingVectorY = -this.movingVectorY;
+            this.destY = this.y;
         } else if (this.y > this.gameSurface.getHeight() - height) {
-            this.y = this.gameSurface.getHeight() - height;
-            this.movingVectorY = -this.movingVectorY;
+            this.destY = this.y;
         }
 
         // устанавливаем колонку спрайтов в зависимости от направления движения
@@ -181,7 +184,6 @@ public class Character {
         canvas.drawBitmap(bitmap, x, y, null);
         // Записываем последнее время отрисовки
         this.lastDrawNanoTime = System.nanoTime();
-        Log.wtf("what",""+x+","+y+";"+destX+","+destY);
     }
 
     public void setMovingVector(int movingVectorX, int movingVectorY) {
@@ -189,9 +191,8 @@ public class Character {
         this.movingVectorY = movingVectorY;
     }
 
-    public void setDestination(int X,int Y)
-    {
-        destX=X;
-        destY=Y;
+    public void setDestination(int X, int Y) {
+        destX = X;
+        destY = Y;
     }
 }
