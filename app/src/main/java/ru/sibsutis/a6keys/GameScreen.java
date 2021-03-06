@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -14,7 +15,7 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
 
     private Character character;
 
-    public GameScreen(Context context)  {
+    public GameScreen(Context context) {
         super(context);
 
         // Make Game Surface focusable so it can handle events.
@@ -24,27 +25,28 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
         this.getHolder().addCallback(this);
     }
 
-    public void update()  {
+    public void update() {
         this.character.update();
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            int x=  (int)event.getX();
-            int y = (int)event.getY();
+            int x = (int) event.getX();
+            int y = (int) event.getY();
 
-            int movingVectorX =x-  this.character.x ;
-            int movingVectorY =y-  this.character.y ;
+            int movingVectorX = x - this.character.x;
+            int movingVectorY = y - this.character.y;
 
-            this.character.setMovingVector(movingVectorX,movingVectorY);
+            this.character.setMovingVector(movingVectorX, movingVectorY);
+            this.character.setDestination(x, y);
             return true;
         }
         return false;
     }
 
     @Override
-    public void draw(Canvas canvas)  {
+    public void draw(Canvas canvas) {
         super.draw(canvas);
 
         this.character.draw(canvas);
@@ -53,9 +55,9 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
     // Implements method of SurfaceHolder.Callback
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        Bitmap chBitmap = BitmapFactory.decodeResource(this.getResources(),R.drawable.sprite);
-        this.character = new Character(this,chBitmap,100,50);
-        this.gameThread = new GameManager(this,holder);
+        Bitmap chBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.sprite);
+        this.character = new Character(this, chBitmap, 100, 50);
+        this.gameThread = new GameManager(this, holder);
         this.gameThread.setRunning(true);
         this.gameThread.start();
     }
@@ -69,17 +71,17 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
     // Implements method of SurfaceHolder.Callback
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        boolean retry= true;
-        while(retry) {
+        boolean retry = true;
+        while (retry) {
             try {
                 this.gameThread.setRunning(false);
 
                 // Parent thread must wait until the end of GameThread.
                 this.gameThread.join();
-            }catch(InterruptedException e)  {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            retry= true;
+            retry = true;
         }
     }
 

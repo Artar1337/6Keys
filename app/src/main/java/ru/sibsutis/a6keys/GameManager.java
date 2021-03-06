@@ -16,6 +16,7 @@ public class GameManager extends Thread {
 
     @Override
     public void run()  {
+
         long startTime = System.nanoTime();
 
         while(running)  {
@@ -44,8 +45,6 @@ public class GameManager extends Thread {
             if(waitTime < 100)  {
                 waitTime= 100; // Millisecond.
             }
-            System.out.print(" Wait Time="+ waitTime);
-
             try {
                 // Sleep.
                 this.sleep(waitTime);
@@ -53,7 +52,6 @@ public class GameManager extends Thread {
 
             }
             startTime = System.nanoTime();
-            System.out.print(".");
         }
     }
 
