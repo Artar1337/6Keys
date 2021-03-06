@@ -23,8 +23,8 @@ public class Character {
     // Скорость (pixel/millisecond)
     public static final float VELOCITY = 0.15f;
 
-    private int movingVectorX = 10;
-    private int movingVectorY = 10;
+    private int movingVectorX = 0;
+    private int movingVectorY = 0;
 
     private long lastDrawNanoTime = -1;
 
@@ -56,14 +56,15 @@ public class Character {
         this.x = x;
         this.y = y;
 
-        destX = x;
-        destY = y;
         width = image.getWidth() / colCount;
         height = image.getHeight() / rowCount;
 
         headCenterX = width / 2;
         headCenterY = height / 3;
-        TapRadius = headCenterX;
+        TapRadius = Math.max(headCenterX, headCenterY);
+
+        destX = x + headCenterX;
+        destY = y + headCenterY;
 
         this.gameSurface = gameSurface;
 
@@ -78,6 +79,7 @@ public class Character {
             this.leftToRights[col] = this.createSubImageAt(ROW_LEFT_TO_RIGHT, col);
             this.bottomToTops[col] = this.createSubImageAt(ROW_BOTTOM_TO_TOP, col);
         }
+
     }
 
     public Bitmap[] getMoveBitmaps() {
