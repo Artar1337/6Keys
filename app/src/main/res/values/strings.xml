@@ -13,4 +13,7 @@
     <string name="back">Назад</string>
     <string name="sound">Звук </string>
     <string name="music">Музыка </string>
+    <string name="startTask">Приступить к заданию</string>
+    <string name="keysCount">Количество ключей</string>
+    <string name="goInside">Зайти внутрь</string>
 </resources>

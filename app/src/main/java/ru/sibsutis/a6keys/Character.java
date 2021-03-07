@@ -38,10 +38,11 @@ public class Character {
     //ширина и высота куска спрайта, который режем
     private final int width;
     private final int height;
+
     //нужны для того, чтобы персоваж шел примерно к центру головы,
     //а не к левому верхнему углу
-    private final int headCenterX;
-    private final int headCenterY;
+    public final int headCenterX;
+    public final int headCenterY;
 
     public int destX;
     public int destY;
@@ -108,18 +109,50 @@ public class Character {
         return bitmaps[this.colUsing];
     }
 
-    public boolean shouldRun() {
+    public boolean shouldNotRun() {
         return (Math.abs(x - destX + headCenterX) < TapRadius
                 && Math.abs(y - destY + headCenterY) < TapRadius);
+    }
+
+    public void spriteIndexUpdate() {
+        // устанавливаем следующий номер спрайта по столбцу
+        this.colUsing++;
+        if (colUsing >= this.colCount) {
+            this.colUsing = 0;
+        }
+        // устанавливаем строку спрайтов в зависимости от направления движения
+        if (movingVectorX > 0) {
+            if (movingVectorY > 0 && Math.abs(movingVectorX) < Math.abs(movingVectorY)) {
+                this.rowUsing = ROW_TOP_TO_BOTTOM;
+            } else if (movingVectorY < 0 && Math.abs(movingVectorX) < Math.abs(movingVectorY)) {
+                this.rowUsing = ROW_BOTTOM_TO_TOP;
+            } else {
+                this.rowUsing = ROW_LEFT_TO_RIGHT;
+            }
+        } else {
+            if (movingVectorY > 0 && Math.abs(movingVectorX) < Math.abs(movingVectorY)) {
+                this.rowUsing = ROW_TOP_TO_BOTTOM;
+            } else if (movingVectorY < 0 && Math.abs(movingVectorX) < Math.abs(movingVectorY)) {
+                this.rowUsing = ROW_BOTTOM_TO_TOP;
+            } else {
+                this.rowUsing = ROW_RIGHT_TO_LEFT;
+            }
+        }
     }
 
     public void update() {
 
         //если стоим на месте - ставим спрайт
         //стоящего лицом вперед парня
-        if (shouldRun()) {
+        //проверяем, находится ли герой около двери
+        if (shouldNotRun()) {
             this.colUsing = 1;
             this.rowUsing = ROW_TOP_TO_BOTTOM;
+
+            if(this.gameSurface.closeToAnyDoor()!=0){
+
+            }
+
             return;
         }
 
@@ -140,7 +173,6 @@ public class Character {
             return;
         }
 
-
         this.x = x + (int) (distance * movingVectorX / movingVectorLength);
         this.y = y + (int) (distance * movingVectorY / movingVectorLength);
 
@@ -151,29 +183,7 @@ public class Character {
             this.y = y - (int) (distance * movingVectorY / movingVectorLength);
         }
 
-        // устанавливаем колонку спрайтов в зависимости от направления движения
-        this.colUsing++;
-        if (colUsing >= this.colCount) {
-            this.colUsing = 0;
-        }
-
-        if (movingVectorX > 0) {
-            if (movingVectorY > 0 && Math.abs(movingVectorX) < Math.abs(movingVectorY)) {
-                this.rowUsing = ROW_TOP_TO_BOTTOM;
-            } else if (movingVectorY < 0 && Math.abs(movingVectorX) < Math.abs(movingVectorY)) {
-                this.rowUsing = ROW_BOTTOM_TO_TOP;
-            } else {
-                this.rowUsing = ROW_LEFT_TO_RIGHT;
-            }
-        } else {
-            if (movingVectorY > 0 && Math.abs(movingVectorX) < Math.abs(movingVectorY)) {
-                this.rowUsing = ROW_TOP_TO_BOTTOM;
-            } else if (movingVectorY < 0 && Math.abs(movingVectorX) < Math.abs(movingVectorY)) {
-                this.rowUsing = ROW_BOTTOM_TO_TOP;
-            } else {
-                this.rowUsing = ROW_RIGHT_TO_LEFT;
-            }
-        }
+        spriteIndexUpdate();
     }
 
     public void draw(Canvas canvas) {
