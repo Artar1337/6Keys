@@ -17,6 +17,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="ru.sibsutis.a6keys.MathActivity"
+            android:label="@string/solveMath" />
     </application>
 
 </manifest>

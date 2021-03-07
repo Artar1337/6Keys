@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@color/black"
+        android:text="@string/solveMath"
+        android:textSize="36sp" />
+    <TextView
+        android:id="@+id/MathTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@color/black"
+        android:text="228+1137"
+        android:textSize="54sp" />
+
+    <EditText
+        android:id="@+id/MathAnswer"
+        android:layout_width="match_parent"
+        android:layout_height="96dp"
+        android:layout_gravity="center"
+        android:inputType="numberSigned"
+        android:textSize="54sp"
+        android:text="" />
+    <Button
+        android:id="@+id/MathButtonSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:text="@string/answer" />
+    <TextView
+        android:id="@+id/MathToast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@color/black"
+        android:text="Верно/неверно"
+        android:textSize="32sp" />
+</LinearLayout>
