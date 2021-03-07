@@ -27,7 +27,7 @@
         android:layout_gravity="center"
         android:inputType="numberSigned"
         android:textSize="54sp"
-        android:text="" />
+        android:text="Поле ответа" />
     <Button
         android:id="@+id/MathButtonSubmit"
         android:layout_width="wrap_content"

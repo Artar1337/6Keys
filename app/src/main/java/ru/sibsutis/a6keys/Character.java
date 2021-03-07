@@ -3,6 +3,7 @@ package ru.sibsutis.a6keys;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.util.Log;
+import android.widget.Button;
 
 public class Character {
 
@@ -145,16 +146,26 @@ public class Character {
         //если стоим на месте - ставим спрайт
         //стоящего лицом вперед парня
         //проверяем, находится ли герой около двери
+
+        Button doorButton = gameSurface.gameActivity.gotoDoorButton;
+
         if (shouldNotRun()) {
             this.colUsing = 1;
             this.rowUsing = ROW_TOP_TO_BOTTOM;
 
-            if(this.gameSurface.closeToAnyDoor()!=0){
-
+            if (this.gameSurface.closeToAnyDoor() != 0) {
+                doorButton.setAlpha(1.0f);
+                doorButton.setEnabled(true);
+            } else {
+                doorButton.setAlpha(0.0f);
+                doorButton.setEnabled(false);
             }
 
             return;
         }
+
+        doorButton.setAlpha(0.0f);
+        doorButton.setEnabled(false);
 
         long now = System.nanoTime();
 

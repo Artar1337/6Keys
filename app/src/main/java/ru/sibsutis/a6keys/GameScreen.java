@@ -21,8 +21,9 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
     private Character character;
     private GameManager gameThread;
     private int W, H, doorX;
-
     private boolean[] taskCompleted = {false, false, false, false, false, false};
+
+    public GameActivity gameActivity;
 
     private Bitmap rotateBitmap(Bitmap src, int degrees) {
         Matrix matrix = new Matrix();
@@ -30,7 +31,7 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
         return Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), matrix, true);
     }
 
-    public GameScreen(Context context) {
+    public GameScreen(Context context, GameActivity activity) {
         super(context);
 
         // Make Game Surface focusable so it can handle events.
@@ -42,8 +43,8 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
         background = BitmapFactory.decodeResource(getResources(), R.drawable.backgrtile_v2);
         door = BitmapFactory.decodeResource(getResources(), R.drawable.door);
         rotatedDoor = rotateBitmap(door, 180);
-        doorRadius = door.getHeight() + door.getWidth();
-
+        doorRadius = door.getHeight();
+        gameActivity=activity;
 
     }
 

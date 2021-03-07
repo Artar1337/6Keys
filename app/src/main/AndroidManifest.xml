@@ -20,6 +20,9 @@
         <activity
             android:name="ru.sibsutis.a6keys.MathActivity"
             android:label="@string/solveMath" />
+        <activity
+            android:name="ru.sibsutis.a6keys.GameActivity"
+            android:label="@string/solveMath" />
     </application>
 
 </manifest>
