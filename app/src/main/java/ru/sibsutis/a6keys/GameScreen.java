@@ -13,6 +13,7 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
 
     private GameManager gameThread;
 
+    private Bitmap background;
     private Character character;
 
     public GameScreen(Context context) {
@@ -23,6 +24,8 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
 
         // Set callback.
         this.getHolder().addCallback(this);
+
+        background = BitmapFactory.decodeResource(getResources(),R.drawable.backgrtile_v2);
     }
 
     public void update() {
@@ -48,6 +51,8 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
+
+        canvas.drawBitmap(background,0,0,null);
 
         this.character.draw(canvas);
     }

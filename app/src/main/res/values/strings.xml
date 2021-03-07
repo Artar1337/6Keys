@@ -7,4 +7,10 @@
     <string name="no">Нет</string>
     <string name="correct">Верно!</string>
     <string name="incorrect">Неверно.</string>
+    <string name="start">Начать</string>
+    <string name="exit">Выйти</string>
+    <string name="prefs">Настройки</string>
+    <string name="back">Назад</string>
+    <string name="sound">Звук </string>
+    <string name="music">Музыка </string>
 </resources>
