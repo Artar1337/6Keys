@@ -13,9 +13,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class GameActivity extends Activity {
+public class GameActivity extends Activity implements View.OnClickListener {
 
     public Button gotoDoorButton;
+    private GameScreen gameView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,19 +39,27 @@ public class GameActivity extends Activity {
         //gotoDoorButton.setAlpha(1.0f);
         gotoDoorButton.setEnabled(false);
         gotoDoorButton.setText(getString(R.string.startTask));
-        gotoDoorButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(v.getContext(),"ewfwe",Toast.LENGTH_SHORT).show();
+        gotoDoorButton.setOnClickListener(this);
 
-            }
-        });
+
 
         gameWidgets.addView(gotoDoorButton);
-        GameScreen gameView = new GameScreen (this,this);
+        gameView = new GameScreen (this,this);
         game.addView(gameView);
         game.addView(gameWidgets);
         setContentView(game);
+    }
 
+    @Override
+    public void onClick(View v) {
+        Toast.makeText(v.getContext(),"ewfwe",Toast.LENGTH_SHORT).show();
+        switch(gameView.character.doorNumber){
+            case 1://MATH
+                Intent intent = new Intent(GameActivity.this, MathActivity.class);
+                startActivity(intent);
+                break;
+            default:
+                break;
+        }
     }
 }

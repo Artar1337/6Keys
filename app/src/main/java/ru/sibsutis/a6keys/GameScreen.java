@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -18,12 +19,12 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
     final private int doorRadius;
     final private int[] doorY = new int[3];
 
-    private Character character;
     private GameManager gameThread;
     private int W, H, doorX;
     private boolean[] taskCompleted = {false, false, false, false, false, false};
 
     public GameActivity gameActivity;
+    public Character character;
 
     private Bitmap rotateBitmap(Bitmap src, int degrees) {
         Matrix matrix = new Matrix();
@@ -140,13 +141,12 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
         while (retry) {
             try {
                 this.gameThread.setRunning(false);
-
+                retry=false;
                 // Parent thread must wait until the end of GameThread.
                 this.gameThread.join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            retry = true;
         }
     }
 

@@ -50,6 +50,7 @@ public class Character {
     public int x;
     public int y;
     public final int TapRadius;
+    public int doorNumber=0;
 
 
     public Character(GameScreen gameSurface, Bitmap image, int x, int y) {
@@ -148,12 +149,14 @@ public class Character {
         //проверяем, находится ли герой около двери
 
         Button doorButton = gameSurface.gameActivity.gotoDoorButton;
+        doorNumber=0;
 
         if (shouldNotRun()) {
             this.colUsing = 1;
             this.rowUsing = ROW_TOP_TO_BOTTOM;
 
-            if (this.gameSurface.closeToAnyDoor() != 0) {
+            doorNumber=this.gameSurface.closeToAnyDoor();
+            if (doorNumber != 0) {
                 doorButton.setAlpha(1.0f);
                 doorButton.setEnabled(true);
             } else {
