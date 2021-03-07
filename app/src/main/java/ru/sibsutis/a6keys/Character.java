@@ -98,8 +98,8 @@ public class Character {
     }
 
     public Bitmap createSubImageAt(int row, int col) {
-        // createBitmap(bitmap, x, y, width, height).
-        Bitmap subImage = Bitmap.createBitmap(image, col * width, row * height, width, height);
+        Bitmap subImage = Bitmap.createBitmap
+                (image, col * width, row * height, width, height);
         return subImage;
     }
 
@@ -107,7 +107,6 @@ public class Character {
         Bitmap[] bitmaps = this.getMoveBitmaps();
         return bitmaps[this.colUsing];
     }
-
 
     public boolean shouldRun() {
         return (Math.abs(x - destX + headCenterX) < TapRadius
@@ -135,7 +134,8 @@ public class Character {
 
         float distance = VELOCITY * deltaTime;
 
-        double movingVectorLength = Math.sqrt(movingVectorX * movingVectorX + movingVectorY * movingVectorY);
+        double movingVectorLength = Math.sqrt
+                (movingVectorX * movingVectorX + movingVectorY * movingVectorY);
         if (Double.compare(movingVectorLength, 0.0) == 0) {
             return;
         }
@@ -144,16 +144,11 @@ public class Character {
         this.x = x + (int) (distance * movingVectorX / movingVectorLength);
         this.y = y + (int) (distance * movingVectorY / movingVectorLength);
 
-        if (this.x < 0) {
-            this.destX = this.x;
-        } else if (this.x > this.gameSurface.getWidth() - width) {
-            this.destX = this.x;
-        }
-
-        if (this.y < 0) {
-            this.destY = this.y;
-        } else if (this.y > this.gameSurface.getHeight() - height) {
-            this.destY = this.y;
+        //если вышли за границы экрана, то откатываем изменения x и y
+        if ((this.x < 0) || (this.x > this.gameSurface.getWidth() - width) ||
+                (this.y < 0) || (this.y > this.gameSurface.getHeight() - height)) {
+            this.x = x - (int) (distance * movingVectorX / movingVectorLength);
+            this.y = y - (int) (distance * movingVectorY / movingVectorLength);
         }
 
         // устанавливаем колонку спрайтов в зависимости от направления движения
@@ -194,7 +189,7 @@ public class Character {
     }
 
     public void setDestination(int X, int Y) {
-        destX = X;
-        destY = Y;
+        this.destX = X;
+        this.destY = Y;
     }
 }
