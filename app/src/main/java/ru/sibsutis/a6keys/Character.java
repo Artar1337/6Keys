@@ -189,10 +189,11 @@ public class Character {
 
         this.x = x + (int) (distance * movingVectorX / movingVectorLength);
         this.y = y + (int) (distance * movingVectorY / movingVectorLength);
+        int heightPlusDoor=height+gameSurface.bigDoorH;
 
         //если вышли за границы экрана, то откатываем изменения x и y
         if ((this.x < 0) || (this.x > this.gameSurface.getWidth() - width) ||
-                (this.y < 0) || (this.y > this.gameSurface.getHeight() - height)) {
+                (this.y < 0) || (this.y > this.gameSurface.getHeight() - heightPlusDoor)) {
             this.x = x - (int) (distance * movingVectorX / movingVectorLength);
             this.y = y - (int) (distance * movingVectorY / movingVectorLength);
         }
