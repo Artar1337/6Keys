@@ -16,4 +16,6 @@
     <string name="startTask">Приступить к заданию</string>
     <string name="keysCount">Количество ключей</string>
     <string name="goInside">Зайти внутрь</string>
+    <string name="solveCard">Выберите правильные карточки</string>
+    <string name="knowCard">Запомните карточки</string>
 </resources>

@@ -22,7 +22,10 @@
             android:label="@string/solveMath" />
         <activity
             android:name="ru.sibsutis.a6keys.GameActivity"
-            android:label="@string/solveMath" />
+            android:label="@string/app_name" />
+        <activity
+            android:name="ru.sibsutis.a6keys.CardActivity"
+            android:label="@string/app_name" />
     </application>
 
 </manifest>

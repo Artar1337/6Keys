@@ -53,11 +53,33 @@ public class GameActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         Toast.makeText(v.getContext(),"ewfwe",Toast.LENGTH_SHORT).show();
+        Intent intent;
         switch(gameView.character.doorNumber){
             case 1://MATH
-                Intent intent = new Intent(GameActivity.this, MathActivity.class);
+                intent = new Intent(GameActivity.this, MathActivity.class);
                 startActivity(intent);
                 break;
+            case 2://оценочные вопросы
+                intent = new Intent(GameActivity.this, MathActivity.class);
+                startActivity(intent);
+                break;
+            case 3://логич задачка
+                intent = new Intent(GameActivity.this, MathActivity.class);
+                startActivity(intent);
+                break;
+            case 4://задачка на поиск числа в послед-ти
+                intent = new Intent(GameActivity.this, MathActivity.class);
+                startActivity(intent);
+                break;
+            case 5://карточки
+                intent = new Intent(GameActivity.this, CardActivity.class);
+                startActivity(intent);
+                break;
+            case 6://5 хытрых вопросов
+                intent = new Intent(GameActivity.this, MathActivity.class);
+                startActivity(intent);
+                break;
+
             default:
                 break;
         }
