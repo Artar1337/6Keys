@@ -5,11 +5,21 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/CardHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textColor="@color/black"
         android:text="@string/knowCard"
+        android:textAlignment="center"
+        android:textSize="32sp" />
+    <TextView
+        android:id="@+id/CardTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@color/black"
+        android:text=""
         android:textAlignment="center"
         android:textSize="36sp" />
     <TableLayout

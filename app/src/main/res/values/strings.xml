@@ -18,4 +18,15 @@
     <string name="goInside">Зайти внутрь</string>
     <string name="solveCard">Выберите правильные карточки</string>
     <string name="knowCard">Запомните карточки</string>
+    <string name="pickCard">Выберите карточку</string>
+    <string name="card1">Звезда</string>
+    <string name="card2">Молния</string>
+    <string name="card3">Многоконечная звезда</string>
+    <string name="card4">Месяц</string>
+    <string name="timeIsUp">Время истекло!</string>
+    <string name="gameOver">Игра окончена.</string>
+    <string name="taskPassed">Задание выполнено.</string>
+    <string name="tooMuchAttempts">Вы слишком много ошибались!</string>
+    <string name="time">Оставшееся время: </string>
+    <string name="attempts">Попыток сделано: </string>
 </resources>
