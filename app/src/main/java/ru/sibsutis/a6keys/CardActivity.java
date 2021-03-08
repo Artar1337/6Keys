@@ -191,6 +191,7 @@ public class CardActivity extends AppCompatActivity {
 
     }
 
+    //этот метод вызывается также и из других activity классов
     public static void showDialog(boolean won, boolean mistaken, long lastTime, int attempts, Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         if (!won) {

@@ -28,6 +28,6 @@
     <string name="taskPassed">Задание выполнено.</string>
     <string name="tooMuchAttempts">Вы слишком много ошибались!</string>
     <string name="time">Оставшееся время: </string>
-    <string name="attempts">Попыток сделано: </string>
+    <string name="attempts">Неверных попыток сделано: </string>
     <string name="solveLogic">Решите задачу</string>
 </resources>

@@ -3,6 +3,7 @@ package ru.sibsutis.a6keys;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Pair;
 import android.view.Gravity;
 import android.view.View;
@@ -17,12 +18,20 @@ import java.util.Random;
 
 public class MathActivity extends Activity {
 
+    final private long TIME_LIMIT=60000;
+    final private int MAX_ATTEMPTS=10;
+    final private int TASKS_TO_SOLVE=10;
+    private boolean taskCompleted=false;
     private Button submit;
     private EditText answerView;
     private TextView taskView;
+    private TextView time;
     private TextView mathToast;
     private Pair<String,Integer> task;
     private int userScore;
+    private long lastTime;
+    private int attempts=0;
+    private int correct=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +49,7 @@ public class MathActivity extends Activity {
         answerView = (EditText) findViewById(R.id.MathAnswer);
         taskView = (TextView) findViewById(R.id.MathTask);
         mathToast = (TextView) findViewById(R.id.MathToast);
+        time=(TextView) findViewById(R.id.MathTime);
 
         userScore=0;
         mathToast.setText("");
@@ -54,17 +64,49 @@ public class MathActivity extends Activity {
                     scoreChange(true);
                             mathToast.setText(getString(R.string.correct));
                             mathToast.setTextColor(Color.GREEN);
+                            correct++;
+                    if(correct>=TASKS_TO_SOLVE){
+                        taskCompleted=true;
+                        CardActivity.showDialog(true,false,
+                                lastTime,attempts,v.getContext());
+                    }
                 }
                 else {
                     scoreChange(false);
                     mathToast.setText(getString(R.string.incorrect));
                     mathToast.setTextColor(Color.RED);
+                    attempts++;
+                    if(attempts>MAX_ATTEMPTS){
+                        taskCompleted=true;
+                        CardActivity.showDialog(false,true,
+                                lastTime,attempts,v.getContext());
+                    }
                 }
                 mathToast.setAlpha(1f);
                 mathToast.animate().alpha(0f).setDuration(800);
                 setTask();
             }
         });
+        attempts=0;
+        new CountDownTimer(TIME_LIMIT, 1000) {
+
+            public void onTick(long msUntilFinished) {
+                //запоминаем оставшееся время для формирования
+                //количества очков
+                if (!taskCompleted){
+                    lastTime = msUntilFinished;
+                    time.setText(String.valueOf(msUntilFinished / 1000));
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                if (!taskCompleted) {
+                    CardActivity.showDialog(false,false,
+                            lastTime,attempts,taskView.getContext());
+                }
+            }
+        }.start();
     }
 
     //включая min, не включая max

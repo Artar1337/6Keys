@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         this.setContentView(R.layout.activity_main);
-        Intent intent = new Intent(MainActivity.this, LogicActivity.class);
+        Intent intent = new Intent(MainActivity.this, GameActivity.class);
         startActivity(intent);
     }
 }
