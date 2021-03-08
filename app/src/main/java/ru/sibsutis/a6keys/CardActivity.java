@@ -2,6 +2,7 @@ package ru.sibsutis.a6keys;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -183,19 +184,19 @@ public class CardActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 if (!taskCompleted) {
-                    showDialog(false);
+                    showDialog(false,false,lastTime,attempts,getApplicationContext());
                 }
             }
         }.start();
 
     }
 
-    public void showDialog(boolean won,boolean mistaken) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    public static void showDialog(boolean won, boolean mistaken, long lastTime, int attempts, Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         if (!won) {
-            builder.setTitle(getString(R.string.gameOver))
+            builder.setTitle(context.getString(R.string.gameOver))
                     .setIcon(R.drawable.wrong)
-                    .setMessage(getString(R.string.timeIsUp))
+                    .setMessage(context.getString(R.string.timeIsUp))
                     .setCancelable(false)
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
@@ -204,14 +205,14 @@ public class CardActivity extends AppCompatActivity {
                         }
                     });
             if(mistaken){
-                builder.setMessage(getString(R.string.tooMuchAttempts));
+                builder.setMessage(context.getString(R.string.tooMuchAttempts));
             }
         } else {
-            builder.setTitle(getString(R.string.gameOver))
+            builder.setTitle(context.getString(R.string.gameOver))
                     .setIcon(R.drawable.correct)
-                    .setMessage(getString(R.string.taskPassed)+"\n"
-                            +getString(R.string.time)+(lastTime/1000)+"\n"
-                            +getString(R.string.attempts)+attempts)
+                    .setMessage(context.getString(R.string.taskPassed)+"\n"
+                            +context.getString(R.string.time)+(lastTime/1000)+"\n"
+                            +context.getString(R.string.attempts)+attempts)
                     .setCancelable(false)
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
@@ -222,10 +223,6 @@ public class CardActivity extends AppCompatActivity {
         }
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-
-    void showDialog(boolean won) {
-        showDialog(won,false);
     }
 
     public boolean taskDone() {
@@ -256,7 +253,7 @@ public class CardActivity extends AppCompatActivity {
                     stage++;
                     setTable();
                 } else {
-                    showDialog(true);
+                    showDialog(true,false,lastTime,attempts,this);
                     taskCompleted = true;
                     taskStarted = false;
                 }
@@ -266,7 +263,7 @@ public class CardActivity extends AppCompatActivity {
         else {
             attempts++;
             if(attempts>ATTEMPT_LIMIT){
-                showDialog(false,true);
+                showDialog(false,true,lastTime,attempts,this);
                 taskCompleted = true;
                 taskStarted = false;
             }

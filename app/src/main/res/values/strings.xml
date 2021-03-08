@@ -29,4 +29,5 @@
     <string name="tooMuchAttempts">Вы слишком много ошибались!</string>
     <string name="time">Оставшееся время: </string>
     <string name="attempts">Попыток сделано: </string>
+    <string name="solveLogic">Решите задачу</string>
 </resources>

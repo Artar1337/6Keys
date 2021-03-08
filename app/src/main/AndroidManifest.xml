@@ -26,6 +26,9 @@
         <activity
             android:name="ru.sibsutis.a6keys.CardActivity"
             android:label="@string/app_name" />
+        <activity
+            android:name="ru.sibsutis.a6keys.LogicActivity"
+            android:label="@string/app_name" />
     </application>
 
 </manifest>
