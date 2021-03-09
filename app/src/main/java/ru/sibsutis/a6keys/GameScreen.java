@@ -12,6 +12,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -23,14 +24,23 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
     final private Bitmap door;
     final private Bitmap bigDoor;
     final private Bitmap rotatedDoor;
+    final private Bitmap father;
+    final private Bitmap girl;
+    final private Bitmap carpet;
     final private Bitmap[] keys = new Bitmap[6];
     final private int doorRadius;
     final private int[] doorY = new int[3];
     final private int[] keyX = new int[6];
 
     private GameManager gameThread;
-    private int W, H, doorX,keyY,bDoorX,bDoorY;
-    private boolean[] taskCompleted = {false, false, false, false, false, false};
+
+    static int currentIndex;
+
+    private int W, H, doorX, keyY, bDoorX, bDoorY;
+    //private boolean[] taskCompleted = {false, false, false, false, false, false};
+    private boolean[] taskCompleted = {true, true, true, true, true, true};
+
+    public boolean notIsInEndRoom = true;
 
     public GameActivity gameActivity;
     public Character character;
@@ -53,22 +63,25 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
 
         background = BitmapFactory.decodeResource(getResources(), R.drawable.backgrtile_v2);
         door = BitmapFactory.decodeResource(getResources(), R.drawable.door);
-        bigDoor= BitmapFactory.decodeResource(getResources(), R.drawable.super_door);
+        father = BitmapFactory.decodeResource(getResources(), R.drawable.father);
+        girl = BitmapFactory.decodeResource(getResources(), R.drawable.girl);
+        carpet = BitmapFactory.decodeResource(getResources(), R.drawable.carpet);
+        bigDoor = BitmapFactory.decodeResource(getResources(), R.drawable.super_door);
         rotatedDoor = rotateBitmap(door, 180);
         doorRadius = door.getHeight();
-        gameActivity=activity;
-        Bitmap key=BitmapFactory.decodeResource(getResources(), R.drawable.key);
-        keys[0]=tintImage(key,Color.RED);
-        keys[1]=tintImage(key,Color.YELLOW);
-        keys[2]=tintImage(key,Color.GREEN);
-        keys[3]=tintImage(key,Color.CYAN);
-        keys[4]=tintImage(key,Color.BLUE);
-        keys[5]=tintImage(key,Color.MAGENTA);
+        gameActivity = activity;
+        Bitmap key = BitmapFactory.decodeResource(getResources(), R.drawable.key);
+        keys[0] = tintImage(key, Color.RED);
+        keys[1] = tintImage(key, Color.YELLOW);
+        keys[2] = tintImage(key, Color.GREEN);
+        keys[3] = tintImage(key, Color.CYAN);
+        keys[4] = tintImage(key, Color.BLUE);
+        keys[5] = tintImage(key, Color.MAGENTA);
 
     }
 
     public void update() {
-        this.character.update();
+        if (notIsInEndRoom) this.character.update();
     }
 
     @Override
@@ -92,6 +105,14 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
                 && Math.abs(y - destY) < doorRadius);
     }
 
+    public boolean allCompleted() {
+        for (int i = 0; i < 6; i++) {
+            if (!taskCompleted[i])
+                return false;
+        }
+        return true;
+    }
+
     public int closeToAnyDoor() {
         int x = this.character.x + this.character.headCenterX;
         int y = this.character.y + this.character.headCenterY;
@@ -108,6 +129,8 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
             return 5;
         else if (closeToDoor(x, y, doorX, doorY[2]) && !taskCompleted[5])
             return 6;
+        else if (closeToDoor(x, y, bDoorX+door.getHeight(), bDoorY) && allCompleted())
+            return 7;
 
         return 0;
     }
@@ -125,26 +148,40 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
     public void draw(Canvas canvas) {
         super.draw(canvas);
 
+
         //сначала рисуем фон
         canvas.drawBitmap(background, 0, 0, null);
-        //потом рисуем двери
-        canvas.drawBitmap(door, 0, doorY[0], null);
-        canvas.drawBitmap(door, 0, doorY[1], null);
-        canvas.drawBitmap(door, 0, doorY[2], null);
+        if (notIsInEndRoom) {
+            //потом рисуем двери
+            canvas.drawBitmap(door, 0, doorY[0], null);
+            canvas.drawBitmap(door, 0, doorY[1], null);
+            canvas.drawBitmap(door, 0, doorY[2], null);
 
-        canvas.drawBitmap(rotatedDoor, doorX, doorY[0], null);
-        canvas.drawBitmap(rotatedDoor, doorX, doorY[1], null);
-        canvas.drawBitmap(rotatedDoor, doorX, doorY[2], null);
+            canvas.drawBitmap(rotatedDoor, doorX, doorY[0], null);
+            canvas.drawBitmap(rotatedDoor, doorX, doorY[1], null);
+            canvas.drawBitmap(rotatedDoor, doorX, doorY[2], null);
 
-        canvas.drawBitmap(bigDoor, bDoorX, bDoorY, null);
+            canvas.drawBitmap(bigDoor, bDoorX, bDoorY, null);
 
-        //потом рисуем персонажа
-        this.character.draw(canvas);
-        //потом рисуем собранные ключи
-        for(int i=0;i<6;i++)
-        {
-            if(taskCompleted[i])
-                canvas.drawBitmap(keys[i],keyX[i],keyY,null);
+
+            //потом рисуем персонажа
+            this.character.draw(canvas);
+            //потом рисуем собранные ключи
+            for (int i = 0; i < 6; i++) {
+                if (taskCompleted[i])
+                    canvas.drawBitmap(keys[i], keyX[i], keyY, null);
+            }
+        } else {
+            canvas.drawBitmap(carpet, 0, 0, null);
+            canvas.drawBitmap(carpet, carpet.getWidth(), 0, null);
+            canvas.drawBitmap(father, carpet.getWidth() / 2.0f,
+                    carpet.getHeight() / 2.0f, null);
+            canvas.drawBitmap(girl, 3 * carpet.getWidth() / 2.0f,
+                    carpet.getHeight() / 2.0f, null);
+            canvas.drawBitmap(character.getCharactersBack(), carpet.getWidth(),
+                    H / 2.0f, null);
+            gameActivity.gotoDoorButton.setEnabled(false);
+            gameActivity.gotoDoorButton.setAlpha(0.0f);
         }
 
     }
@@ -163,13 +200,13 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
         doorY[0] = 10;
         doorY[1] = H / 3 + 10;
         doorY[2] = 2 * H / 3 + 10;
-        bDoorX=W/2-bigDoor.getWidth()/2;
-        bDoorY=H-bigDoor.getHeight();
-        keyY=H-keys[0].getHeight()-10;
+        bDoorX = W / 2 - bigDoor.getWidth() / 2;
+        bDoorY = H - bigDoor.getHeight();
+        keyY = H - keys[0].getHeight() - 10;
         keyX[0] = 10;
-        bigDoorH=bigDoor.getHeight();
-        for(int i=1;i<6;i++)
-            keyX[i]=keyX[i-1]+keys[i].getWidth()+12;
+        bigDoorH = bigDoor.getHeight();
+        for (int i = 1; i < 6; i++)
+            keyX[i] = keyX[i - 1] + keys[i].getWidth() + 12;
     }
 
     // Implements method of SurfaceHolder.Callback
@@ -185,13 +222,92 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
         while (retry) {
             try {
                 this.gameThread.setRunning(false);
-                retry=false;
+                retry = false;
                 // Parent thread must wait until the end of GameThread.
                 this.gameThread.join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void startNewSpeech(final String[] sentences,final int []who){
+
+        //по 50 мс на букву и 2 мин на общее чтение
+        final int TIME_LIMIT = sentences[currentIndex].length()*50+2000;
+        String currentName="";
+
+        if(who[currentIndex]==1){
+            gameActivity.finalDialog.setTextColor(Color.BLACK);
+            currentName=gameActivity.getString(R.string.father);
+        }
+        else if(who[currentIndex]==2){
+            gameActivity.finalDialog.setTextColor(Color.MAGENTA);
+            currentName=gameActivity.getString(R.string.girl);
+        }
+        else if(who[currentIndex]==3){
+            gameActivity.finalDialog.setTextColor(Color.BLUE);
+            currentName=gameActivity.getString(R.string.you);
+        }
+
+        final int startIndex=currentName.length();
+
+
+        new CountDownTimer(TIME_LIMIT, 50) {
+
+            int index=0;
+
+            public void onTick(long msUntilFinished) {
+                if(index<=sentences[currentIndex].length()){
+                    gameActivity.finalDialog.setText
+                            (sentences[currentIndex].substring(0,index));
+                    index++;
+                }
+
+            }
+
+            @Override
+            public void onFinish() {
+                currentIndex++;
+                if(currentIndex<who.length){
+                    startNewSpeech(sentences,who);
+                }
+            }
+        }.start();
+    }
+
+    public void startDialogEnding(){
+        String []sentences=new String[11];
+        String father = gameActivity.getString(R.string.father)+" ";
+        String girl = gameActivity.getString(R.string.girl)+" ";
+        String you = gameActivity.getString(R.string.you)+" ";
+        //1 - отец, 2 - дочь, 3 - вы
+        int who[]= {1,1,1,1,2,1,1,1,1,1,3};
+        sentences[0]=father+gameActivity.getString(R.string.ending_part1);
+        sentences[1]=father+gameActivity.getString(R.string.ending_part2);
+        sentences[2]=father+gameActivity.getString(R.string.ending_part3);
+        sentences[3]=father+gameActivity.getString(R.string.ending_part4);
+        sentences[4]=girl+gameActivity.getString(R.string.ending_part4_g);
+        sentences[5]=father+gameActivity.getString(R.string.ending_part5);
+        sentences[6]=father+gameActivity.getString(R.string.ending_part6);
+        sentences[7]=father+gameActivity.getString(R.string.ending_part7);
+        sentences[8]=father+gameActivity.getString(R.string.ending_part8);
+        sentences[9]=father+gameActivity.getString(R.string.ending_part9);
+        sentences[10]=you+gameActivity.getString(R.string.ending_part9_u);
+        currentIndex=0;
+
+        new CountDownTimer(2000, 2000) {
+            public void onTick(long msUntilFinished) {
+            }
+            @Override
+            public void onFinish() {
+                gameActivity.finalDialog.setEnabled(true);
+                gameActivity.finalDialog.setAlpha(1.0f);
+                startNewSpeech(sentences,who);
+            }
+        }.start();
+
+
     }
 
 }

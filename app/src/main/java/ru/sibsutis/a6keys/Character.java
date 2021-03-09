@@ -52,6 +52,10 @@ public class Character {
     public final int TapRadius;
     public int doorNumber=0;
 
+    public Bitmap getCharactersBack(){
+        return bottomToTops[1];
+    }
+
 
     public Character(GameScreen gameSurface, Bitmap image, int x, int y) {
 

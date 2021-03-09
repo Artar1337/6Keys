@@ -2,6 +2,7 @@ package ru.sibsutis.a6keys;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -10,12 +11,15 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class GameActivity extends Activity implements View.OnClickListener {
 
     public Button gotoDoorButton;
+    public TextView finalDialog;
     private GameScreen gameView;
 
     @Override
@@ -29,22 +33,32 @@ public class GameActivity extends Activity implements View.OnClickListener {
 
         FrameLayout game = new FrameLayout(this);
 
-        LinearLayout gameWidgets = new LinearLayout (this);
-        gotoDoorButton = new Button(this);
-
+        TableLayout gameWidgets = new TableLayout(this);
+        gameWidgets.setShrinkAllColumns(true);
+        gameWidgets.setStretchAllColumns(true);
         gameWidgets.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         gameWidgets.setGravity(Gravity.CENTER | Gravity.TOP);
 
-        gotoDoorButton.setWidth(400);
-        //gotoDoorButton.setAlpha(1.0f);
+        gotoDoorButton = new Button(this);
+        gotoDoorButton.setWidth(600);
         gotoDoorButton.setEnabled(false);
         gotoDoorButton.setText(getString(R.string.startTask));
         gotoDoorButton.setOnClickListener(this);
 
+        finalDialog = new TextView(this);
+        finalDialog.setTextSize(32.0f);
+        finalDialog.setGravity(Gravity.CENTER_HORIZONTAL);
+        finalDialog.setBackgroundResource(R.drawable.background_d);
+        finalDialog.setEnabled(false);
+        finalDialog.setAlpha(0.0f);
 
-
-        gameWidgets.addView(gotoDoorButton);
-        gameView = new GameScreen (this,this);
+        TableRow row1 = new TableRow(this);
+        TableRow row2 = new TableRow(this);
+        row1.addView(gotoDoorButton);
+        row2.addView(finalDialog);
+        gameWidgets.addView(row1);
+        gameWidgets.addView(row2);
+        gameView = new GameScreen(this, this);
         game.addView(gameView);
         game.addView(gameWidgets);
         setContentView(game);
@@ -52,9 +66,9 @@ public class GameActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        Toast.makeText(v.getContext(),"Starting task...",Toast.LENGTH_SHORT).show();
+        Toast.makeText(v.getContext(), "Starting task...", Toast.LENGTH_SHORT).show();
         Intent intent;
-        switch(gameView.character.doorNumber){
+        switch (gameView.character.doorNumber) {
             case 1://MATH
                 intent = new Intent(GameActivity.this, MathActivity.class);
                 startActivity(intent);
@@ -75,11 +89,14 @@ public class GameActivity extends Activity implements View.OnClickListener {
                 intent = new Intent(GameActivity.this, CardActivity.class);
                 startActivity(intent);
                 break;
-            case 6://5 хытрых вопросов
+            case 6://3 хытрых вопроса
                 intent = new Intent(GameActivity.this, QuestionsActivity.class);
                 startActivity(intent);
                 break;
-
+            case 7://идем в главную дверцу
+                gameView.notIsInEndRoom = false;
+                gameView.startDialogEnding();
+                break;
             default:
                 break;
         }

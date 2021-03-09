@@ -36,4 +36,20 @@
     <string name="tooLowPercentage">Слишком далеко от истинного значения!</string>
     <string name="guessPercentage">Процент точности: </string>
     <string name="guessWriteOption">Выберите правильный вариант ответа</string>
+    <string name="father">Отец: </string>
+    <string name="girl">Девушка: </string>
+    <string name="you">Вы: </string>
+    <string name="ending_part1">Здравствуй, юноша!</string>
+    <string name="ending_part2">Я вижу, что ты справился со всеми моими заданиями!</string>
+    <string name="ending_part3">Не волнуйся, твоей девушке ничего не грозит.</string>
+    <string name="ending_part4">Я её отец, поэтому никогда не обижу её.</string>
+    <string name="ending_part4_g">Это правда! Прости меня, что не сказала тебе раньше!</string>
+    <string name="ending_part5">Всё это было проверкой, и ты её прошел! Поздравляю!</string>
+    <string name="ending_part6">Теперь, когда ты доказал, что у тебя в голове что-то есть, ты можешь жениться на моей дочери.</string>
+    <string name="ending_part7">Можешь считать это официальным благословением.</string>
+    <string name="ending_part8">Также, я принял решение устроить тебя на работу в мою компанию.</string>
+    <string name="ending_part9">Ты показал себя молодцом, мне нужны такие сотрудники!</string>
+    <string name="ending_part9_u">Спасибо тебе, Отец! Спасибо за всё!</string>
+    <string name="end_game">КОНЕЦ ИГРЫ.</string>
+    <string name="end_game_score">Ваш счёт: </string>
 </resources>
