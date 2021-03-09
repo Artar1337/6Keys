@@ -11,6 +11,8 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -32,8 +34,13 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
     final private int[] doorY = new int[3];
     final private int[] keyX = new int[6];
 
-    private GameManager gameThread;
 
+    private SoundPool sounds;
+    private int soundDialog;
+    private float soundVolume=1.0f;
+    private float musicVolume=1.0f;
+
+    private GameManager gameThread;
     static int currentIndex;
 
     private int W, H, doorX, keyY, bDoorX, bDoorY;
@@ -60,6 +67,9 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
 
         // Set callback.
         this.getHolder().addCallback(this);
+
+        sounds = new SoundPool(50, AudioManager.STREAM_MUSIC, 0);
+        soundDialog = sounds.load(context, R.raw.dial, 1);
 
         background = BitmapFactory.decodeResource(getResources(), R.drawable.backgrtile_v2);
         door = BitmapFactory.decodeResource(getResources(), R.drawable.door);
@@ -261,6 +271,7 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
                 if(index<=sentences[currentIndex].length()){
                     gameActivity.finalDialog.setText
                             (sentences[currentIndex].substring(0,index));
+                    sounds.play(soundDialog, soundVolume, soundVolume, 0, 0, 1.5f);
                     index++;
                 }
 
