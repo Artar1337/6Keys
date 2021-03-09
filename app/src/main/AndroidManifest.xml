@@ -25,10 +25,13 @@
             android:label="@string/app_name" />
         <activity
             android:name="ru.sibsutis.a6keys.CardActivity"
-            android:label="@string/app_name" />
+            android:label="@string/solveCard" />
         <activity
             android:name="ru.sibsutis.a6keys.LogicActivity"
-            android:label="@string/app_name" />
+            android:label="@string/solveLogic" />
+        <activity
+            android:name="ru.sibsutis.a6keys.PicActivity"
+            android:label="@string/solveLogic" />
     </application>
 
 </manifest>

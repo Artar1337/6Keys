@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/PicHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        android:layout_gravity="center"
+        android:textColor="@color/black"
+        android:text="@string/solveLogic"
+        android:textSize="32sp" />
+    <TextView
+        android:id="@+id/PicTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@color/black"
+        android:text="TIME"
+        android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/PicTask"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        android:textColor="@color/black"
+        android:text="Описание"
+        android:padding="10dp"
+        android:textSize="22sp" />
+    <ImageView
+        android:id="@+id/PicImage"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_gravity="center"
+        android:textColor="@color/black"
+        android:src="@drawable/pic9"
+        android:padding="10dp"
+        android:textSize="28sp" />
+    <EditText
+        android:id="@+id/PicEditText"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_gravity="center"
+        android:textSize="32sp"
+        android:text="" />
+    <Button
+        android:id="@+id/PicButton"
+        android:layout_width="wrap_content"
+        android:layout_height="72dp"
+        android:layout_gravity="center"
+        android:textSize="32sp"
+        android:text="@string/answer" />
+
+</LinearLayout>
