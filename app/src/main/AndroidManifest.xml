@@ -32,6 +32,9 @@
         <activity
             android:name="ru.sibsutis.a6keys.PicActivity"
             android:label="@string/solveLogic" />
+        <activity
+            android:name="ru.sibsutis.a6keys.EstimateActivity"
+            android:label="@string/solveLogic" />
     </application>
 
 </manifest>

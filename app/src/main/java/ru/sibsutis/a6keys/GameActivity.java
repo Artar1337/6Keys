@@ -60,7 +60,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case 2://оценочные вопросы
-                intent = new Intent(GameActivity.this, MathActivity.class);
+                intent = new Intent(GameActivity.this, EstimateActivity.class);
                 startActivity(intent);
                 break;
             case 3://логич задачка

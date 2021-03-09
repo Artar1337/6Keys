@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/EstHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="52dp"
+        android:layout_gravity="center"
+        android:textColor="@color/black"
+        android:text="@string/whatPercent"
+        android:textSize="24sp" />
+    <TextView
+        android:id="@+id/EstTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@color/black"
+        android:text="TIME"
+        android:textSize="36sp" />
+
+    <TableLayout
+        android:id="@+id/EstLayout"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"/>
+
+    <EditText
+        android:id="@+id/EstEditText"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_gravity="center"
+        android:textSize="32sp"
+        android:inputType="numberDecimal"
+        android:text="" />
+    <Button
+        android:id="@+id/EstButton"
+        android:layout_width="wrap_content"
+        android:layout_height="72dp"
+        android:layout_gravity="center"
+        android:textSize="32sp"
+        android:text="@string/answer" />
+
+</LinearLayout>

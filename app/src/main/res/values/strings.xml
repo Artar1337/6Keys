@@ -30,4 +30,7 @@
     <string name="time">Оставшееся время: </string>
     <string name="attempts">Неверных попыток сделано: </string>
     <string name="solveLogic">Решите задачу</string>
+    <string name="howManyBalls">Сколько здесь мячей?</string>
+    <string name="whatPercent">Какой процент трубы заполнен?</string>
+    <string name="whatAngle">Какой здесь угол [0;179]?</string>
 </resources>
