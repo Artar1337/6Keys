@@ -33,4 +33,7 @@
     <string name="howManyBalls">Сколько здесь мячей?</string>
     <string name="whatPercent">Какой процент трубы заполнен?</string>
     <string name="whatAngle">Какой здесь угол [0;179]?</string>
+    <string name="tooLowPercentage">Слишком далеко от истинного значения!</string>
+    <string name="guessPercentage">Процент точности: </string>
+
 </resources>

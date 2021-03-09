@@ -1,12 +1,17 @@
 package ru.sibsutis.a6keys;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -19,23 +24,62 @@ import android.widget.TextView;
 
 public class EstimateActivity extends Activity {
 
-    final private long TIME_LIMIT = 100000;
-    final private float PERCENT_LIMIT = 90;
+    final private long TIME_LIMIT = 45000;
+    final private float PERCENT_LIMIT = 85;
 
     private Bitmap ball;
     private Bitmap pipe;
     private Bitmap pipeTop;
-    private boolean taskCompleted=false;
-    private float userPercent=100;
+    private boolean taskCompleted = false;
+    //текущий процент попадания "в яблочко"
+    private float userPercent = 100;
     private long lastTime;
-    private int stage=1;
-    private int ballsCount=0;
+    private int stage = 1;
+    //количество шаров для 2 задания
+    private int ballsCount = 0;
+    //истинный процент для 1 задания
     private int percentage;
+    //истинный угол для 3 задания
+    private int angle;
 
     private TextView header;
     private EditText answer;
 
-    private void taskUpdate(){
+    public void showDialog(boolean won, boolean mistaken, long lastTime) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        if (!won) {
+            builder.setTitle(getString(R.string.gameOver))
+                    .setIcon(R.drawable.wrong)
+                    .setMessage(getString(R.string.timeIsUp))
+                    .setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+            if (mistaken) {
+                builder.setMessage(getString(R.string.tooLowPercentage));
+            }
+        } else {
+            builder.setTitle(getString(R.string.gameOver))
+                    .setIcon(R.drawable.correct)
+                    .setMessage(getString(R.string.taskPassed) + "\n"
+                            + getString(R.string.time) + (lastTime / 1000) + "\n"
+                            + getString(R.string.guessPercentage) + (int) userPercent)
+                    .setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+        }
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void taskUpdate() {
         if (stage < 1 || stage > 3) {
             return;
         }
@@ -45,11 +89,11 @@ public class EstimateActivity extends Activity {
         table.setShrinkAllColumns(true);
         table.setStretchAllColumns(true);
 
-        if(stage==1){
-            percentage=MathActivity.getRandomNumber(5,96);
+        if (stage == 1) {
+            percentage = MathActivity.getRandomNumber(5, 96);
 
             Bitmap water = Bitmap.createBitmap(pipe.getWidth(),
-                    pipe.getHeight(),Bitmap.Config.ARGB_8888);
+                    pipe.getHeight(), Bitmap.Config.ARGB_8888);
             water.eraseColor(android.graphics.Color.GRAY);
 
             Canvas canvas = new Canvas(water);
@@ -57,11 +101,11 @@ public class EstimateActivity extends Activity {
             paint.setStyle(Paint.Style.FILL_AND_STROKE);
             paint.setColor(android.graphics.Color.BLUE);
 
-            float scaledPercentage=((float)pipe.getHeight()-2.0f*pipeTop.getHeight())/100.0f;
-            scaledPercentage*=percentage;
+            float scaledPercentage = ((float) pipe.getHeight() - 2.0f * pipeTop.getHeight()) / 100.0f;
+            scaledPercentage *= percentage;
 
-            canvas.drawRect(0,pipeTop.getHeight()+scaledPercentage,pipe.getWidth()
-                    ,pipe.getHeight()-pipeTop.getHeight(),paint);
+            canvas.drawRect(0, pipeTop.getHeight() + scaledPercentage, pipe.getWidth()
+                    , pipe.getHeight() - pipeTop.getHeight(), paint);
 
             ImageView view = new ImageView(this);
             view.setImageBitmap(water);
@@ -70,19 +114,21 @@ public class EstimateActivity extends Activity {
             ImageView pipeView = new ImageView(this);
             pipeView.setImageBitmap(pipe);
 
-            FrameLayout layout=new FrameLayout(this);
+            FrameLayout layout = new FrameLayout(this);
 
             layout.addView(view);
             layout.addView(pipeView);
             table.addView(layout);
-        }
-        else if(stage==2){
-            int rows=10;
-            int count=0;
+            header.setText(getString(R.string.whatPercent));
+            percentage = 100 - percentage;
+            Log.wtf("percent", "is " + percentage);
+        } else if (stage == 2) {
+            int rows = 10;
+            int count = 0;
             for (int i = 0; i < rows; i++) {
                 TableRow row = new TableRow(this);
 
-                int cols=MathActivity.getRandomNumber(2,11);
+                int cols = MathActivity.getRandomNumber(2, 11);
 
                 for (int j = 0; j < cols; j++) {
                     ImageView view = new ImageView(this);
@@ -92,10 +138,38 @@ public class EstimateActivity extends Activity {
                 }
                 table.addView(row);
             }
-            ballsCount=count;
-        }
-        else{
+            ballsCount = count;
+            header.setText(getString(R.string.howManyBalls));
+            Log.wtf("balls count", "is " + ballsCount);
+        } else {
+            angle = MathActivity.getRandomNumber(15, 176);
+            //берем тот же размер, что и у pipe, для удобства
+            Bitmap angleImage = Bitmap.createBitmap(pipe.getWidth(),
+                    pipe.getHeight(), Bitmap.Config.ARGB_8888);
 
+            Canvas canvas = new Canvas(angleImage);
+            Paint paint = new Paint();
+            paint.setStrokeWidth(5.0f);
+            paint.setColor(android.graphics.Color.BLUE);
+
+            float lineY = angleImage.getHeight() / 2.0f + pipeTop.getHeight();
+
+            canvas.drawLine(angleImage.getWidth() / 2.0f, lineY,
+                    angleImage.getWidth(), lineY, paint);
+
+            double angleR = angle * Math.PI / 180;
+            float endX = angleImage.getWidth() / 2.0f + angleImage.getWidth() / 2.0f * (float) Math.cos(angleR);
+            float endY = lineY - angleImage.getWidth() / 2.0f * (float) Math.sin(angleR);
+
+            canvas.drawLine(angleImage.getWidth() / 2.0f, lineY,
+                    endX, endY, paint);
+
+            ImageView view = new ImageView(this);
+            view.setImageBitmap(angleImage);
+            view.draw(canvas);
+            table.addView(view);
+            header.setText(getString(R.string.whatAngle));
+            Log.wtf("angle", "is " + angle);
         }
 
     }
@@ -112,14 +186,53 @@ public class EstimateActivity extends Activity {
 
         this.setContentView(R.layout.activity_estimate);
 
-        ball= BitmapFactory.decodeResource(getResources(),R.drawable.ball);
-        pipe= BitmapFactory.decodeResource(getResources(),R.drawable.pipe);
-        pipeTop=BitmapFactory.decodeResource(getResources(),R.drawable.pipe_top);
+        ball = BitmapFactory.decodeResource(getResources(), R.drawable.ball);
+        pipe = BitmapFactory.decodeResource(getResources(), R.drawable.pipe);
+        pipeTop = BitmapFactory.decodeResource(getResources(), R.drawable.pipe_top);
 
         TextView time = findViewById(R.id.EstTime);
         header = findViewById(R.id.EstHeader);
         answer = findViewById(R.id.EstEditText);
         Button bAnswer = findViewById(R.id.EstButton);
+        bAnswer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (answer.getText().length() < 1 || taskCompleted)
+                    return;
+                int ans = Integer.parseInt(answer.getText().toString());
+                if (stage == 1) {
+                    userPercent = 100.0f - (Math.abs(percentage - ans) * 100.0f) / percentage;
+                    if (userPercent < PERCENT_LIMIT) {
+                        showDialog(false, true, lastTime);
+                        taskCompleted = true;
+                        return;
+                    }
+                    stage++;
+                    taskUpdate();
+                } else if (stage == 2) {
+                    float tempPercent = 100.0f - (Math.abs(ballsCount - ans) * 100.0f) / ballsCount;
+                    userPercent = (userPercent + tempPercent) / 2.0f;
+                    if (userPercent < PERCENT_LIMIT) {
+                        showDialog(false, true, lastTime);
+                        taskCompleted = true;
+                        return;
+                    }
+                    stage++;
+                    taskUpdate();
+                } else if (stage == 3) {
+                    float tempPercent;
+                    tempPercent = 100.0f - (Math.abs(angle - ans) * 100.0f) / angle;
+                    userPercent = (userPercent + tempPercent) / 2.0f;
+                    taskCompleted = true;
+                    if (userPercent < PERCENT_LIMIT) {
+                        showDialog(false, true, lastTime);
+                        return;
+                    }
+                    showDialog(true, false, lastTime);
+                }
+                answer.setText("");
+            }
+        });
 
         taskUpdate();
 
@@ -129,7 +242,7 @@ public class EstimateActivity extends Activity {
             public void onTick(long msUntilFinished) {
                 //запоминаем оставшееся время для формирования
                 //количества очков
-                if (!taskCompleted){
+                if (!taskCompleted) {
                     lastTime = msUntilFinished;
                     time.setText(String.valueOf(msUntilFinished / 1000));
                 }
@@ -138,8 +251,8 @@ public class EstimateActivity extends Activity {
             @Override
             public void onFinish() {
                 if (!taskCompleted) {
-                    CardActivity.showDialog(false,false,
-                            lastTime,0,header.getContext());
+                    showDialog(false, false, lastTime);
+                    taskCompleted = true;
                 }
             }
         }.start();
