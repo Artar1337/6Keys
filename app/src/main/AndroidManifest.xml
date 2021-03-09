@@ -35,6 +35,9 @@
         <activity
             android:name="ru.sibsutis.a6keys.EstimateActivity"
             android:label="@string/solveLogic" />
+        <activity
+            android:name="ru.sibsutis.a6keys.QuestionsActivity"
+            android:label="@string/solveLogic" />
     </application>
 
 </manifest>

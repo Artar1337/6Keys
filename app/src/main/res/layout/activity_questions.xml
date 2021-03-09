@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/QuestionsHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:text="@string/guessWriteOption"
+        android:textSize="24sp" />
+    <TextView
+        android:id="@+id/QuestionsTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@color/black"
+        android:text="TIME"
+        android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/QuestionsTask"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:text="Не очень длинная задача"
+        android:padding="10dp"
+        android:textSize="28sp" />
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+        <RadioButton
+            android:id="@+id/radio_1"
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:text="1"
+            android:padding="4dp"
+            android:textSize="22sp" />
+        <RadioButton
+            android:id="@+id/radio_2"
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:text="2"
+            android:padding="4dp"
+            android:textSize="22sp" />
+        <RadioButton
+            android:id="@+id/radio_3"
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:text="Проверка проверка проверка проверка проверка проверка"
+            android:padding="4dp"
+            android:textSize="22sp" />
+        <RadioButton
+            android:id="@+id/radio_4"
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:text="4"
+            android:padding="4dp"
+            android:textSize="22sp" />
+    </RadioGroup>
+
+
+</LinearLayout>

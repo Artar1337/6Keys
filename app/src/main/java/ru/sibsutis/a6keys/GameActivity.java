@@ -52,7 +52,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        Toast.makeText(v.getContext(),"ewfwe",Toast.LENGTH_SHORT).show();
+        Toast.makeText(v.getContext(),"Starting task...",Toast.LENGTH_SHORT).show();
         Intent intent;
         switch(gameView.character.doorNumber){
             case 1://MATH
@@ -76,7 +76,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case 6://5 хытрых вопросов
-                intent = new Intent(GameActivity.this, MathActivity.class);
+                intent = new Intent(GameActivity.this, QuestionsActivity.class);
                 startActivity(intent);
                 break;
 
