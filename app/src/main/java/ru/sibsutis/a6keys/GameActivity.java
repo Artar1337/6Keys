@@ -60,6 +60,10 @@ public class GameActivity extends Activity implements View.OnClickListener {
                     }
                 })
                 .show();
+        GameScreen.userScore = 0;
+        GameScreen.setStartPoint(-1, -1);
+        for (int i = 0; i < 6; i++)
+            GameScreen.taskCompleted[i] = false;
     }
 
     @Override
