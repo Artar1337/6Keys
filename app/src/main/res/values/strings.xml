@@ -50,6 +50,16 @@
     <string name="ending_part8">Также, я принял решение устроить тебя на работу в мою компанию.</string>
     <string name="ending_part9">Ты показал себя молодцом, мне нужны такие сотрудники!</string>
     <string name="ending_part9_u">Спасибо тебе, Отец! Спасибо за всё!</string>
+    <string name="entered_end">Вы открываете массивную стальную дверь…</string>
     <string name="end_game">КОНЕЦ ИГРЫ.</string>
     <string name="end_game_score">Ваш счёт: </string>
+    <string name="task_brief">Описание задания</string>
+    <string name="ready">Я готов :)</string>
+    <string name="not_ready">Отмена -_-</string>
+    <string name="task_1">Решите 10 примеров за отведенное время. Старайтесь не ошибаться!</string>
+    <string name="task_2">Выполните оценочные задания с наибольшей точностью ответа.</string>
+    <string name="task_3">Решите задачу. У вас три попытки.</string>
+    <string name="task_4">Решите задачу с картинкой. У вас одна попытка.</string>
+    <string name="task_5">Запомните карточки и восстановите их!</string>
+    <string name="task_6">Безошибочно ответьте на 3 вопроса.</string>
 </resources>

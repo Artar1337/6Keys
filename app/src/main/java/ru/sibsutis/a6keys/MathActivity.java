@@ -19,7 +19,7 @@ import java.util.Random;
 public class MathActivity extends Activity {
 
     final private long TIME_LIMIT=60000;
-    final private int MAX_ATTEMPTS=10;
+    final private int MAX_ATTEMPTS=3;
     final private int TASKS_TO_SOLVE=10;
     private boolean taskCompleted=false;
     private Button submit;
