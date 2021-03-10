@@ -30,22 +30,23 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
     final private Bitmap girl;
     final private Bitmap carpet;
     final private Bitmap[] keys = new Bitmap[6];
+    final private Bitmap[] knobs = new Bitmap[6];
     final private int doorRadius;
     final private int[] doorY = new int[3];
     final private int[] keyX = new int[6];
 
 
-    private SoundPool sounds;
-    private int soundDialog;
-    private float soundVolume=1.0f;
-    private float musicVolume=1.0f;
+    public SoundPool sounds;
+    public int soundDialog,soundStep;
+    public float soundVolume=1.0f;
+    public float musicVolume=1.0f;
 
     private GameManager gameThread;
     static int currentIndex;
 
     private int W, H, doorX, keyY, bDoorX, bDoorY;
-    //private boolean[] taskCompleted = {false, false, false, false, false, false};
-    private boolean[] taskCompleted = {true, true, true, true, true, true};
+    private boolean[] taskCompleted = {false, false, false, false, false, false};
+    //private boolean[] taskCompleted = {true, true, true, true, true, true};
 
     public boolean notIsInEndRoom = true;
 
@@ -70,6 +71,7 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
 
         sounds = new SoundPool(50, AudioManager.STREAM_MUSIC, 0);
         soundDialog = sounds.load(context, R.raw.dial, 1);
+        soundStep= sounds.load(context, R.raw.walk, 1);
 
         background = BitmapFactory.decodeResource(getResources(), R.drawable.backgrtile_v2);
         door = BitmapFactory.decodeResource(getResources(), R.drawable.door);
@@ -81,12 +83,20 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
         doorRadius = door.getHeight();
         gameActivity = activity;
         Bitmap key = BitmapFactory.decodeResource(getResources(), R.drawable.key);
+        Bitmap knob = BitmapFactory.decodeResource(getResources(), R.drawable.knob);
+        Bitmap rotatedKnob = rotateBitmap(knob, 180);
         keys[0] = tintImage(key, Color.RED);
         keys[1] = tintImage(key, Color.YELLOW);
         keys[2] = tintImage(key, Color.GREEN);
         keys[3] = tintImage(key, Color.CYAN);
         keys[4] = tintImage(key, Color.BLUE);
         keys[5] = tintImage(key, Color.MAGENTA);
+        knobs[0] = tintImage(knob, Color.RED);
+        knobs[1] = tintImage(rotatedKnob, Color.YELLOW);
+        knobs[2] = tintImage(knob, Color.GREEN);
+        knobs[3] = tintImage(rotatedKnob, Color.CYAN);
+        knobs[4] = tintImage(knob, Color.BLUE);
+        knobs[5] = tintImage(rotatedKnob, Color.MAGENTA);
 
     }
 
@@ -164,12 +174,18 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
         if (notIsInEndRoom) {
             //потом рисуем двери
             canvas.drawBitmap(door, 0, doorY[0], null);
+            canvas.drawBitmap(knobs[0], 0, doorY[0], null);
             canvas.drawBitmap(door, 0, doorY[1], null);
+            canvas.drawBitmap(knobs[2], 0, doorY[1], null);
             canvas.drawBitmap(door, 0, doorY[2], null);
+            canvas.drawBitmap(knobs[4], 0, doorY[2], null);
 
             canvas.drawBitmap(rotatedDoor, doorX, doorY[0], null);
+            canvas.drawBitmap(knobs[1], doorX, doorY[0], null);
             canvas.drawBitmap(rotatedDoor, doorX, doorY[1], null);
+            canvas.drawBitmap(knobs[3], doorX, doorY[1], null);
             canvas.drawBitmap(rotatedDoor, doorX, doorY[2], null);
+            canvas.drawBitmap(knobs[5], doorX, doorY[2], null);
 
             canvas.drawBitmap(bigDoor, bDoorX, bDoorY, null);
 
@@ -200,7 +216,6 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         Bitmap chBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.sprite);
-        this.character = new Character(this, chBitmap, 100, 50);
         this.gameThread = new GameManager(this, holder);
         this.gameThread.setRunning(true);
         this.gameThread.start();
@@ -217,6 +232,8 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
         bigDoorH = bigDoor.getHeight();
         for (int i = 1; i < 6; i++)
             keyX[i] = keyX[i - 1] + keys[i].getWidth() + 12;
+
+        this.character = new Character(this, chBitmap, W/3, 50);
     }
 
     // Implements method of SurfaceHolder.Callback

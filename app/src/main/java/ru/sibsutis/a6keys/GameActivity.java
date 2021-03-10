@@ -45,6 +45,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
         gotoDoorButton.setText(getString(R.string.startTask));
         gotoDoorButton.setOnClickListener(this);
 
+
         finalDialog = new TextView(this);
         finalDialog.setTextSize(32.0f);
         finalDialog.setGravity(Gravity.CENTER_HORIZONTAL);

@@ -2,6 +2,7 @@ package ru.sibsutis.a6keys;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.util.Log;
 import android.widget.Button;
 
@@ -50,9 +51,9 @@ public class Character {
     public int x;
     public int y;
     public final int TapRadius;
-    public int doorNumber=0;
+    public int doorNumber = 0;
 
-    public Bitmap getCharactersBack(){
+    public Bitmap getCharactersBack() {
         return bottomToTops[1];
     }
 
@@ -153,19 +154,23 @@ public class Character {
         //проверяем, находится ли герой около двери
 
         Button doorButton = gameSurface.gameActivity.gotoDoorButton;
-        doorNumber=0;
+        doorNumber = 0;
 
         if (shouldNotRun()) {
             this.colUsing = 1;
             this.rowUsing = ROW_TOP_TO_BOTTOM;
 
-            doorNumber=this.gameSurface.closeToAnyDoor();
+            doorNumber = this.gameSurface.closeToAnyDoor();
+            doorButton.setBackgroundColor(Color.WHITE);
+            doorButton.setTextColor(Color.BLACK);
             if (doorNumber != 0) {
                 doorButton.setAlpha(1.0f);
                 doorButton.setEnabled(true);
+                doorButton.setClickable(true);
             } else {
                 doorButton.setAlpha(0.0f);
                 doorButton.setEnabled(false);
+                doorButton.setClickable(false);
             }
 
             return;
@@ -193,11 +198,11 @@ public class Character {
 
         this.x = x + (int) (distance * movingVectorX / movingVectorLength);
         this.y = y + (int) (distance * movingVectorY / movingVectorLength);
-        int heightPlusDoor=height+gameSurface.bigDoorH;
+        int heightPlusDoor = height + gameSurface.bigDoorH;
 
         //если вышли за границы экрана, то откатываем изменения x и y
-        if ((this.x < 0) || (this.x > this.gameSurface.getWidth() - width) ||
-                (this.y < 0) || (this.y > this.gameSurface.getHeight() - heightPlusDoor)) {
+        if ((this.x + this.headCenterX < -40) || (this.x > this.gameSurface.getWidth() - width) ||
+                (this.y + this.headCenterY < -40) || (this.y > this.gameSurface.getHeight() - heightPlusDoor)) {
             this.x = x - (int) (distance * movingVectorX / movingVectorLength);
             this.y = y - (int) (distance * movingVectorY / movingVectorLength);
         }
@@ -208,8 +213,13 @@ public class Character {
     public void draw(Canvas canvas) {
         Bitmap bitmap = this.getCurrentMoveBitmap();
         canvas.drawBitmap(bitmap, x, y, null);
+
         // Записываем последнее время отрисовки
         this.lastDrawNanoTime = System.nanoTime();
+        if (!shouldNotRun()) {
+            gameSurface.sounds.play(gameSurface.soundStep, gameSurface.soundVolume
+                    , gameSurface.soundVolume, 0, 0, 1.5f);
+        }
     }
 
     public void setMovingVector(int movingVectorX, int movingVectorY) {
