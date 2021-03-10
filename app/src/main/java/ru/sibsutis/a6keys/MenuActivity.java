@@ -1,6 +1,8 @@
 package ru.sibsutis.a6keys;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +13,22 @@ import android.widget.Button;
 public class MenuActivity extends Activity {
 
     @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.exit)
+                .setMessage(R.string.exit_confirm)
+                .setPositiveButton(R.string.no, null)
+                .setNegativeButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+
+                })
+                .show();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -19,7 +37,6 @@ public class MenuActivity extends Activity {
 
         // Set No Title
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //this.setContentView(new GameScreen(this));
         this.setContentView(R.layout.activity_menu);
 
         Intent StartIntent = new Intent(MenuActivity.this, GameActivity.class);
@@ -37,7 +54,7 @@ public class MenuActivity extends Activity {
         bExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                onBackPressed();
             }
         });
         Button bPref = findViewById(R.id.MenuButtonPref);
