@@ -9,16 +9,17 @@
         android:layout_width="wrap_content"
         android:layout_height="52dp"
         android:layout_gravity="center"
-        android:textColor="@color/black"
         android:text="@string/whatPercent"
+        android:textColor="@color/black"
         android:textSize="24sp" />
+
     <TextView
         android:id="@+id/EstTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textColor="@color/black"
         android:text="TIME"
+        android:textColor="@color/black"
         android:textSize="36sp" />
 
     <TableLayout
@@ -27,22 +28,23 @@
         android:layout_height="400dp"
         android:layout_gravity="center"
         android:gravity="center_horizontal"
-        android:orientation="vertical"/>
+        android:orientation="vertical" />
 
     <EditText
         android:id="@+id/EstEditText"
         android:layout_width="match_parent"
         android:layout_height="72dp"
         android:layout_gravity="center"
-        android:textSize="32sp"
         android:inputType="numberDecimal"
-        android:text="" />
+        android:text=""
+        android:textSize="32sp" />
+
     <Button
         android:id="@+id/EstButton"
         android:layout_width="wrap_content"
         android:layout_height="72dp"
         android:layout_gravity="center"
-        android:textSize="32sp"
-        android:text="@string/answer" />
+        android:text="@string/answer"
+        android:textSize="32sp" />
 
 </LinearLayout>

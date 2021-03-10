@@ -67,11 +67,9 @@ public class EstimateActivity extends Activity {
                     });
             if (mistaken) {
                 builder.setMessage(getString(R.string.tooLowPercentage));
-                soundID=soundFailed;
-            }
-            else
-            {
-                soundID=soundTime;
+                soundID = soundFailed;
+            } else {
+                soundID = soundTime;
             }
         } else {
             builder.setTitle(getString(R.string.gameOver))
@@ -86,11 +84,11 @@ public class EstimateActivity extends Activity {
                             dialog.cancel();
                         }
                     });
-            soundID=soundPassed;
+            soundID = soundPassed;
         }
         AlertDialog dialog = builder.create();
         dialog.show();
-        sounds.play(soundID,soundVolume,soundVolume,0,0,1.5f);
+        sounds.play(soundID, soundVolume, soundVolume, 0, 0, 1.5f);
     }
 
     private void taskUpdate() {
@@ -243,8 +241,8 @@ public class EstimateActivity extends Activity {
                         return;
                     }
                     showDialog(true, false, lastTime);
-                    ru.sibsutis.a6keys.GameScreen.taskCompleted[1]=true;
-                    GameScreen.changeScore(3000,(int)(100.0f-userPercent),(int)lastTime/1000);
+                    ru.sibsutis.a6keys.GameScreen.taskCompleted[1] = true;
+                    GameScreen.changeScore(3000, (int) (100.0f - userPercent), (int) lastTime / 1000);
                 }
                 answer.setText("");
             }

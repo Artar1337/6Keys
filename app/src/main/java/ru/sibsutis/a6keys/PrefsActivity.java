@@ -15,23 +15,23 @@ import android.widget.TextView;
 
 public class PrefsActivity extends Activity {
 
-    public static int maxScore=0;
-    public static boolean sound,music;
+    public static int maxScore = 0;
+    public static boolean sound, music;
 
-    public static void savePrefs(Context context){
+    public static void savePrefs(Context context) {
         SharedPreferences sPref = context.getSharedPreferences("6KeysPref", MODE_PRIVATE);
         SharedPreferences.Editor ed = sPref.edit();
-        ed.putInt("6KeysScore",PrefsActivity.maxScore);
-        ed.putBoolean("6KeysSounds",PrefsActivity.sound);
-        ed.putBoolean("6KeysMusic",PrefsActivity.music);
+        ed.putInt("6KeysScore", PrefsActivity.maxScore);
+        ed.putBoolean("6KeysSounds", PrefsActivity.sound);
+        ed.putBoolean("6KeysMusic", PrefsActivity.music);
         ed.commit();
     }
 
-    public static void loadPrefs(Context context){
+    public static void loadPrefs(Context context) {
         SharedPreferences sPref = context.getSharedPreferences("6KeysPref", MODE_PRIVATE);
         maxScore = sPref.getInt("6KeysScore", 0);
-        sound = sPref.getBoolean("6KeysSounds",true);
-        music = sPref.getBoolean("6KeysMusic",true);
+        sound = sPref.getBoolean("6KeysSounds", true);
+        music = sPref.getBoolean("6KeysMusic", true);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class PrefsActivity extends Activity {
         Button bBack = findViewById(R.id.PrefButtonExit);
         Button bReset = findViewById(R.id.PrefButtonRESET);
         TextView record = findViewById(R.id.PrefRecord);
-        record.setText(getString(R.string.record)+" "+maxScore);
+        record.setText(getString(R.string.record) + " " + maxScore);
 
         bBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,18 +62,18 @@ public class PrefsActivity extends Activity {
         bReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                maxScore=0;
+                maxScore = 0;
                 PrefsActivity.savePrefs(v.getContext());
-                record.setText(getString(R.string.record)+" 0");
+                record.setText(getString(R.string.record) + " 0");
             }
         });
 
-        CheckBox cbSound=findViewById(R.id.cbSound);
+        CheckBox cbSound = findViewById(R.id.cbSound);
         cbSound.setChecked(sound);
         cbSound.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                sound=isChecked;
+                sound = isChecked;
                 PrefsActivity.savePrefs(buttonView.getContext());
             }
         });

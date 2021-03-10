@@ -25,13 +25,13 @@ public class LogicActivity extends Activity {
 
     final private int MAX_ATTEMPTS = 3;
     final private long TIME_LIMIT = 60000;
-    private boolean taskCompleted=false;
+    private boolean taskCompleted = false;
 
     //10 вопросов в формате вопрос\n ответ 1_ответ 2\n комментарий
     private String[] qArray;
     private String[] ansArray;
     private String comment;
-    private int attempts=0;
+    private int attempts = 0;
     private EditText ansEdit;
     private TextView head;
     private long lastTime;
@@ -71,9 +71,9 @@ public class LogicActivity extends Activity {
 
         this.setContentView(R.layout.activity_logical);
 
-        attempts=0;
-        taskCompleted=false;
-        qArray = readQuestions(R.raw.t3,this).split("\n");
+        attempts = 0;
+        taskCompleted = false;
+        qArray = readQuestions(R.raw.t3, this).split("\n");
         TextView qView = findViewById(R.id.LogicTask);
         Button aButton = findViewById(R.id.LogicButton);
         TextView time = findViewById(R.id.LogicTime);
@@ -81,7 +81,7 @@ public class LogicActivity extends Activity {
         aButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(taskCompleted)
+                if (taskCompleted)
                     return;
                 if (ansEdit.getText().length() == 0)
                     return;
@@ -99,20 +99,20 @@ public class LogicActivity extends Activity {
                 if (found) {
                     head.setText(getString(R.string.correct));
                     head.setTextColor(Color.GREEN);
-                    taskCompleted=true;
+                    taskCompleted = true;
                     qView.setText(comment);
-                    CardActivity.showDialog(true,false,
-                            lastTime,attempts,v.getContext());
-                    ru.sibsutis.a6keys.GameScreen.taskCompleted[2]=true;
-                    GameScreen.changeScore(1000,attempts,(int)lastTime/1000);
+                    CardActivity.showDialog(true, false,
+                            lastTime, attempts, v.getContext());
+                    ru.sibsutis.a6keys.GameScreen.taskCompleted[2] = true;
+                    GameScreen.changeScore(1000, attempts, (int) lastTime / 1000);
                 } else {
                     head.setText(getString(R.string.incorrect));
                     head.setTextColor(Color.RED);
                     attempts++;
-                    if(attempts>MAX_ATTEMPTS){
-                        taskCompleted=true;
-                        CardActivity.showDialog(false,true,
-                                lastTime,attempts,v.getContext());
+                    if (attempts > MAX_ATTEMPTS) {
+                        taskCompleted = true;
+                        CardActivity.showDialog(false, true,
+                                lastTime, attempts, v.getContext());
                     }
                 }
             }
@@ -122,8 +122,8 @@ public class LogicActivity extends Activity {
         int index = MathActivity.getRandomNumber(0, 10);
         qView.setText(qArray[3 * index]);
         ansArray = qArray[3 * index + 1].split("_");
-        ansArray[ansArray.length-1]=ansArray[ansArray.length-1].
-                substring(0,ansArray[ansArray.length-1].length()-1);
+        ansArray[ansArray.length - 1] = ansArray[ansArray.length - 1].
+                substring(0, ansArray[ansArray.length - 1].length() - 1);
         comment = qArray[3 * index + 2];
 
         new CountDownTimer(TIME_LIMIT, 1000) {
@@ -131,7 +131,7 @@ public class LogicActivity extends Activity {
             public void onTick(long msUntilFinished) {
                 //запоминаем оставшееся время для формирования
                 //количества очков
-                if (!taskCompleted){
+                if (!taskCompleted) {
                     lastTime = msUntilFinished;
                     time.setText(String.valueOf(msUntilFinished / 1000));
                 }
@@ -140,8 +140,8 @@ public class LogicActivity extends Activity {
             @Override
             public void onFinish() {
                 if (!taskCompleted) {
-                    CardActivity.showDialog(false,false
-                            ,lastTime,attempts,qView.getContext());
+                    CardActivity.showDialog(false, false
+                            , lastTime, attempts, qView.getContext());
                 }
             }
         }.start();

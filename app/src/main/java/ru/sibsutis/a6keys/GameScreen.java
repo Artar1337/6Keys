@@ -44,6 +44,7 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
     public static float soundVolume = 1.0f;
     public static float musicVolume = 1.0f;
     public static int userScore;
+    private static int startX = -1, startY = -1;
 
     private GameManager gameThread;
     static int currentIndex;
@@ -58,10 +59,15 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
     public Character character;
     public int bigDoorH;
 
-    public static void changeScore(int baseValue,int attempts,int time){
-        userScore+=TIME_MULTIPLIER*time;
-        userScore+=BAD_ATTEMPT*attempts;
-        userScore+=baseValue;
+    public static void setStartPoint(int x, int y) {
+        startY = y;
+        startX = x;
+    }
+
+    public static void changeScore(int baseValue, int attempts, int time) {
+        userScore += TIME_MULTIPLIER * time;
+        userScore += BAD_ATTEMPT * attempts;
+        userScore += baseValue;
     }
 
     private Bitmap rotateBitmap(Bitmap src, int degrees) {
@@ -73,17 +79,17 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
     public GameScreen(Context context, GameActivity activity) {
         super(context);
 
-        userScore=0;
+        userScore = 0;
 
-        if(PrefsActivity.sound)
-            soundVolume=1.0f;
+        if (PrefsActivity.sound)
+            soundVolume = 1.0f;
         else
-            soundVolume=0.0f;
+            soundVolume = 0.0f;
 
-        if(PrefsActivity.music)
-            musicVolume=1.0f;
+        if (PrefsActivity.music)
+            musicVolume = 1.0f;
         else
-            musicVolume=0.0f;
+            musicVolume = 0.0f;
 
 
         // Make Game Surface focusable so it can handle events.
@@ -259,8 +265,11 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
         bigDoorH = bigDoor.getHeight();
         for (int i = 1; i < 6; i++)
             keyX[i] = keyX[i - 1] + keys[i].getWidth() + 12;
-
-        this.character = new Character(this, chBitmap, W / 3, 50);
+        if (startX < 0)
+            startX = W / 3;
+        if (startY < 0)
+            startY = 50;
+        this.character = new Character(this, chBitmap, startX, startY);
     }
 
     // Implements method of SurfaceHolder.Callback
@@ -324,17 +333,15 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
                 currentIndex++;
                 if (currentIndex < who.length) {
                     startNewSpeech(sentences, who);
-                }
-                else{
+                } else {
                     gameActivity.finalDialog.setAlpha(0.0f);
 
-                    if(userScore>PrefsActivity.maxScore)
-                    {
-                        PrefsActivity.maxScore=userScore;
+                    if (userScore > PrefsActivity.maxScore) {
+                        PrefsActivity.maxScore = userScore;
                         PrefsActivity.savePrefs(gameActivity.finalDialog.getContext());
                     }
 
-                    sounds.play(soundDoor,soundVolume,soundVolume,0,0,1.5f);
+                    sounds.play(soundDoor, soundVolume, soundVolume, 0, 0, 1.5f);
 
                     gameActivity.showFinalDialog();
                 }

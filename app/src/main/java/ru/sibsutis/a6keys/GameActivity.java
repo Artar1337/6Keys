@@ -30,16 +30,17 @@ public class GameActivity extends Activity implements View.OnClickListener {
                 .setPositiveButton(R.string.not_ready, null)
                 .setNegativeButton(R.string.ready, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        GameScreen.setStartPoint(gameView.character.x, gameView.character.y);
                         Intent intent = new Intent(GameActivity.this, classToSummon);
                         startActivity(intent);
-                        GameScreen.sounds.play(GameScreen.soundDoor,GameScreen.soundVolume,
-                                GameScreen.soundVolume,0,0,1.5f);
+                        GameScreen.sounds.play(GameScreen.soundDoor, GameScreen.soundVolume,
+                                GameScreen.soundVolume, 0, 0, 1.5f);
                     }
                 })
                 .show();
     }
 
-    public void startDialog(Context context){
+    public void startDialog(Context context) {
         new AlertDialog.Builder(context)
                 .setTitle(R.string.hello)
                 .setMessage(R.string.description)

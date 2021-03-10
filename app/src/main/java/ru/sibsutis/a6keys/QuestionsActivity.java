@@ -33,7 +33,7 @@ public class QuestionsActivity extends Activity implements View.OnClickListener 
     private TextView qView;
     private long lastTime;
 
-    private RadioButton rb1,rb2,rb3,rb4;
+    private RadioButton rb1, rb2, rb3, rb4;
 
     public void setTask() {
 
@@ -129,7 +129,7 @@ public class QuestionsActivity extends Activity implements View.OnClickListener 
     @Override
     public void onClick(View v) {
 
-        if(taskCompleted)
+        if (taskCompleted)
             return;
         boolean found = (Integer.parseInt(v.getTag().toString()) == correctAnswer);
         if (found) {
@@ -154,8 +154,8 @@ public class QuestionsActivity extends Activity implements View.OnClickListener 
                 taskCompleted = true;
                 CardActivity.showDialog(true, false,
                         lastTime, 0, v.getContext());
-                ru.sibsutis.a6keys.GameScreen.taskCompleted[5]=true;
-                GameScreen.changeScore(1500,0,(int)lastTime/1000);
+                ru.sibsutis.a6keys.GameScreen.taskCompleted[5] = true;
+                GameScreen.changeScore(1500, 0, (int) lastTime / 1000);
             }
         } else {
             head.setText(getString(R.string.incorrect));

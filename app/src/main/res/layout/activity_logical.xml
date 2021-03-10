@@ -9,16 +9,17 @@
         android:layout_width="wrap_content"
         android:layout_height="64dp"
         android:layout_gravity="center"
-        android:textColor="@color/black"
         android:text="@string/solveLogic"
+        android:textColor="@color/black"
         android:textSize="32sp" />
+
     <TextView
         android:id="@+id/LogicTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textColor="@color/black"
         android:text="TIME"
+        android:textColor="@color/black"
         android:textSize="36sp" />
 
     <TextView
@@ -26,23 +27,25 @@
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:layout_gravity="center"
-        android:textColor="@color/black"
-        android:text="Длинная задача"
         android:padding="10dp"
+        android:text="Длинная задача"
+        android:textColor="@color/black"
         android:textSize="28sp" />
+
     <EditText
         android:id="@+id/LogicEditText"
         android:layout_width="match_parent"
         android:layout_height="72dp"
         android:layout_gravity="center"
-        android:textSize="32sp"
-        android:text="" />
+        android:text=""
+        android:textSize="32sp" />
+
     <Button
         android:id="@+id/LogicButton"
         android:layout_width="wrap_content"
         android:layout_height="72dp"
         android:layout_gravity="center"
-        android:textSize="32sp"
-        android:text="@string/answer" />
+        android:text="@string/answer"
+        android:textSize="32sp" />
 
 </LinearLayout>

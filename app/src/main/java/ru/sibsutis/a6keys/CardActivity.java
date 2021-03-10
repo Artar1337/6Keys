@@ -42,7 +42,7 @@ public class CardActivity extends AppCompatActivity {
     private static int currentCard;
     private static int currentCardTag;
 
-    private int attempts=0;
+    private int attempts = 0;
     public static long lastTime;
 
 
@@ -138,7 +138,7 @@ public class CardActivity extends AppCompatActivity {
                         views[cols * i + j].setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                if(taskCompleted)
+                                if (taskCompleted)
                                     return;
                                 if (!taskStarted)
                                     return;
@@ -171,7 +171,7 @@ public class CardActivity extends AppCompatActivity {
 
         loadCards();
         setTable();
-        attempts=0;
+        attempts = 0;
 
         TextView time = findViewById(R.id.CardTimer);
 
@@ -181,7 +181,7 @@ public class CardActivity extends AppCompatActivity {
             public void onTick(long msUntilFinished) {
                 //запоминаем оставшееся время для формирования
                 //количества очков
-                if (!taskCompleted){
+                if (!taskCompleted) {
                     lastTime = msUntilFinished;
                     time.setText(String.valueOf(msUntilFinished / 1000));
                 }
@@ -190,7 +190,7 @@ public class CardActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 if (!taskCompleted) {
-                    showDialog(false,false,lastTime,attempts,views[0].getContext());
+                    showDialog(false, false, lastTime, attempts, views[0].getContext());
                 }
             }
         }.start();
@@ -215,19 +215,18 @@ public class CardActivity extends AppCompatActivity {
                             dialog.cancel();
                         }
                     });
-            if(mistaken){
+            if (mistaken) {
                 builder.setMessage(context.getString(R.string.tooMuchAttempts));
-                soundID=soundFailed;
-            }
-            else{
-                soundID=soundTime;
+                soundID = soundFailed;
+            } else {
+                soundID = soundTime;
             }
         } else {
             builder.setTitle(context.getString(R.string.gameOver))
                     .setIcon(R.drawable.correct)
-                    .setMessage(context.getString(R.string.taskPassed)+"\n"
-                            +context.getString(R.string.time)+(lastTime/1000)+"\n"
-                            +context.getString(R.string.attempts)+attempts)
+                    .setMessage(context.getString(R.string.taskPassed) + "\n"
+                            + context.getString(R.string.time) + (lastTime / 1000) + "\n"
+                            + context.getString(R.string.attempts) + attempts)
                     .setCancelable(false)
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
@@ -235,11 +234,11 @@ public class CardActivity extends AppCompatActivity {
                             dialog.cancel();
                         }
                     });
-            soundID=soundPassed;
+            soundID = soundPassed;
         }
         AlertDialog dialog = builder.create();
         dialog.show();
-        sounds.play(soundID,soundVolume,soundVolume,0,0,1.5f);
+        sounds.play(soundID, soundVolume, soundVolume, 0, 0, 1.5f);
     }
 
     public boolean taskDone() {
@@ -270,9 +269,9 @@ public class CardActivity extends AppCompatActivity {
                     stage++;
                     setTable();
                 } else {
-                    showDialog(true,false,lastTime,attempts,this);
-                    ru.sibsutis.a6keys.GameScreen.taskCompleted[4]=true;
-                    GameScreen.changeScore(2900,attempts,(int)lastTime/1000);
+                    showDialog(true, false, lastTime, attempts, this);
+                    ru.sibsutis.a6keys.GameScreen.taskCompleted[4] = true;
+                    GameScreen.changeScore(2900, attempts, (int) lastTime / 1000);
                     taskCompleted = true;
                     taskStarted = false;
                 }
@@ -281,8 +280,8 @@ public class CardActivity extends AppCompatActivity {
         //неверный ответ
         else {
             attempts++;
-            if(attempts>ATTEMPT_LIMIT){
-                showDialog(false,true,lastTime,attempts,this);
+            if (attempts > ATTEMPT_LIMIT) {
+                showDialog(false, true, lastTime, attempts, this);
                 taskCompleted = true;
                 taskStarted = false;
             }
