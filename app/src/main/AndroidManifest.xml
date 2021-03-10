@@ -19,35 +19,35 @@
         </activity>
         <activity
             android:name="ru.sibsutis.a6keys.PrefsActivity"
-            android:noHistory="false"
-            android:label="@string/prefs" />
+            android:label="@string/prefs"
+            android:noHistory="false" />
         <activity
             android:name="ru.sibsutis.a6keys.MathActivity"
-            android:noHistory="true"
-            android:label="@string/solveMath" />
+            android:label="@string/solveMath"
+            android:noHistory="true" />
         <activity
             android:name="ru.sibsutis.a6keys.GameActivity"
             android:label="@string/app_name" />
         <activity
             android:name="ru.sibsutis.a6keys.CardActivity"
-            android:noHistory="true"
-            android:label="@string/solveCard" />
+            android:label="@string/solveCard"
+            android:noHistory="true" />
         <activity
             android:name="ru.sibsutis.a6keys.LogicActivity"
-            android:noHistory="true"
-            android:label="@string/solveLogic" />
+            android:label="@string/solveLogic"
+            android:noHistory="true" />
         <activity
             android:name="ru.sibsutis.a6keys.PicActivity"
-            android:noHistory="true"
-            android:label="@string/solveLogic" />
+            android:label="@string/solveLogic"
+            android:noHistory="true" />
         <activity
             android:name="ru.sibsutis.a6keys.EstimateActivity"
-            android:noHistory="true"
-            android:label="@string/solveLogic" />
+            android:label="@string/solveLogic"
+            android:noHistory="true" />
         <activity
             android:name="ru.sibsutis.a6keys.QuestionsActivity"
-            android:noHistory="true"
-            android:label="@string/solveLogic" />
+            android:label="@string/solveLogic"
+            android:noHistory="true" />
     </application>
 
 </manifest>
