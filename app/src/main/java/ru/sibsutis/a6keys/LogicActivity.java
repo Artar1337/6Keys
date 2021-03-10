@@ -1,14 +1,10 @@
 package ru.sibsutis.a6keys;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -19,7 +15,6 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
 
 public class LogicActivity extends Activity {
 
@@ -89,7 +84,6 @@ public class LogicActivity extends Activity {
                 boolean found = false;
 
                 for (int i = 0; i < ansArray.length; i++) {
-                    Log.wtf("answers:", ansArray[i]);
                     if (answer.equals(ansArray[i])) {
                         found = true;
                         break;

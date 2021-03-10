@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -68,7 +67,6 @@ public class CardActivity extends AppCompatActivity {
                                 currentCard = -1;
                             else if (which == 4)
                                 currentCard = 4;
-                            Log.wtf("card", "is " + currentCard);
                             ((CardActivity) getActivity()).parseDialogResult();
                         }
                     });

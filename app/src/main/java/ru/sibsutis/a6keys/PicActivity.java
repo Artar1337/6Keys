@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -14,10 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 public class PicActivity extends Activity {
 
@@ -87,7 +82,6 @@ public class PicActivity extends Activity {
                 boolean found = false;
 
                 for (int i = 0; i < ansArray.length; i++) {
-                    Log.wtf("answers:", ansArray[i]);
                     if (answer.equals(ansArray[i])) {
                         found = true;
                         break;

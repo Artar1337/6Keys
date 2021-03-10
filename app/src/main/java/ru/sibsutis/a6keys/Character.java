@@ -3,7 +3,6 @@ package ru.sibsutis.a6keys;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.util.Log;
 import android.widget.Button;
 
 public class Character {
