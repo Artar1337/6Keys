@@ -2,11 +2,9 @@ package ru.sibsutis.a6keys;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -14,14 +12,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 
 public class GameActivity extends Activity implements View.OnClickListener {
 
@@ -29,28 +23,39 @@ public class GameActivity extends Activity implements View.OnClickListener {
     public TextView finalDialog;
     private GameScreen gameView;
 
-    public void briefDialog(Context context, Class classToSummon,String briefString){
+    public void briefDialog(Context context, Class classToSummon, String briefString) {
         new AlertDialog.Builder(context)
                 .setTitle(R.string.task_brief)
                 .setMessage(briefString)
                 .setPositiveButton(R.string.not_ready, null)
                 .setNegativeButton(R.string.ready, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(GameActivity.this,classToSummon);
+                        Intent intent = new Intent(GameActivity.this, classToSummon);
                         startActivity(intent);
+                        GameScreen.sounds.play(GameScreen.soundDoor,GameScreen.soundVolume,
+                                GameScreen.soundVolume,0,0,1.5f);
                     }
                 })
                 .show();
     }
 
-    public void showFinalDialog(){
-        String score = getString(R.string.end_game_score)+" "+(GameScreen.userScore)
-                +"\n"+getString(R.string.score_saved);
+    public void startDialog(Context context){
+        new AlertDialog.Builder(context)
+                .setTitle(R.string.hello)
+                .setMessage(R.string.description)
+                .setPositiveButton(R.string.got_it, null)
+                .show();
+    }
+
+    public void showFinalDialog() {
+        String score = getString(R.string.end_game_score) + " " + (GameScreen.userScore)
+                + "\n" + getString(R.string.score_saved);
         new AlertDialog.Builder(this)
                 .setTitle(R.string.end_game)
                 .setMessage(score)
                 .setNegativeButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        finish();
                     }
                 })
                 .show();
@@ -96,6 +101,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
         game.addView(gameView);
         game.addView(gameWidgets);
         setContentView(game);
+        startDialog(this);
     }
 
     @Override
@@ -103,22 +109,22 @@ public class GameActivity extends Activity implements View.OnClickListener {
         //Toast.makeText(v.getContext(), "Starting task...", Toast.LENGTH_SHORT).show();
         switch (gameView.character.doorNumber) {
             case 1://MATH
-                briefDialog(this,MathActivity.class,getString(R.string.task_1));
+                briefDialog(this, MathActivity.class, getString(R.string.task_1));
                 break;
             case 2://оценочные вопросы
-                briefDialog(this,EstimateActivity.class,getString(R.string.task_2));
+                briefDialog(this, EstimateActivity.class, getString(R.string.task_2));
                 break;
             case 3://логич задачка
-                briefDialog(this,LogicActivity.class,getString(R.string.task_3));
+                briefDialog(this, LogicActivity.class, getString(R.string.task_3));
                 break;
             case 4://задачка с картинкой
-                briefDialog(this,PicActivity.class,getString(R.string.task_4));
+                briefDialog(this, PicActivity.class, getString(R.string.task_4));
                 break;
             case 5://карточки
-                briefDialog(this,CardActivity.class,getString(R.string.task_5));
+                briefDialog(this, CardActivity.class, getString(R.string.task_5));
                 break;
             case 6://3 хытрых вопроса
-                briefDialog(this,QuestionsActivity.class,getString(R.string.task_6));
+                briefDialog(this, QuestionsActivity.class, getString(R.string.task_6));
                 break;
             case 7://идем в главную дверцу
                 Toast.makeText(v.getContext(), getString(R.string.entered_end), Toast.LENGTH_LONG).show();

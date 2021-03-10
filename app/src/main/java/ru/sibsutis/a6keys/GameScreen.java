@@ -49,8 +49,8 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
     static int currentIndex;
 
     private int W, H, doorX, keyY, bDoorX, bDoorY;
-    //public static boolean[] taskCompleted = {false, false, false, false, false, false};
-    public static boolean[] taskCompleted = {true, true, true, true, true, true};
+    public static boolean[] taskCompleted = {false, false, false, false, false, false};
+    //public static boolean[] taskCompleted = {true, true, true, true, true, true};
 
     public boolean notIsInEndRoom = true;
 
@@ -74,6 +74,17 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
         super(context);
 
         userScore=0;
+
+        if(PrefsActivity.sound)
+            soundVolume=1.0f;
+        else
+            soundVolume=0.0f;
+
+        if(PrefsActivity.music)
+            musicVolume=1.0f;
+        else
+            musicVolume=0.0f;
+
 
         // Make Game Surface focusable so it can handle events.
         this.setFocusable(true);
@@ -316,6 +327,15 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
                 }
                 else{
                     gameActivity.finalDialog.setAlpha(0.0f);
+
+                    if(userScore>PrefsActivity.maxScore)
+                    {
+                        PrefsActivity.maxScore=userScore;
+                        PrefsActivity.savePrefs(gameActivity.finalDialog.getContext());
+                    }
+
+                    sounds.play(soundDoor,soundVolume,soundVolume,0,0,1.5f);
+
                     gameActivity.showFinalDialog();
                 }
             }

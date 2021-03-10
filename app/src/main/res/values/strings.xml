@@ -63,5 +63,12 @@
     <string name="task_5">Запомните карточки и восстановите их!</string>
     <string name="task_6">Безошибочно ответьте на 3 вопроса.</string>
     <string name="to_menu">В меню</string>
+    <string name="reset">Сбросить счет</string>
     <string name="score_saved">Ваш счет сохранен.</string>
+    <string name="record">Рекорд: </string>
+    <string name="hello">Добро пожаловать!</string>
+    <string name="description">Вашу девушку похитили и заперли вон за той здоровенной железной дверью!
+        Решите все загадки, чтобы получить 6 ключей, которыми вы сможете открыть эту дверь и спасти вашу девушку!
+    Все загадки имеют лимит времени и неудачных попыток, так что будьте внимательны!</string>
+    <string name="got_it">Понял!</string>
 </resources>

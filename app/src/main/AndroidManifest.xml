@@ -10,13 +10,17 @@
         android:screenOrientation="landscape"
         android:supportsRtl="true"
         android:theme="@style/Theme.6Keys">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MenuActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="ru.sibsutis.a6keys.PrefsActivity"
+            android:noHistory="false"
+            android:label="@string/prefs" />
         <activity
             android:name="ru.sibsutis.a6keys.MathActivity"
             android:noHistory="true"
