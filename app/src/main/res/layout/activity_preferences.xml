@@ -49,4 +49,14 @@
         android:text="@string/back"
         android:textSize="32sp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="230dp"
+        android:layout_gravity="center"
+        android:layout_margin="40dp"
+        android:text="Made by Artar \n(Astrakhantcev IP-815)"
+        android:textAlignment="center"
+        android:textColor="@color/brown_dirt"
+        android:textSize="24sp" />
+
 </LinearLayout>
