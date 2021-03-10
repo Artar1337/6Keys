@@ -81,6 +81,8 @@ public class LogicActivity extends Activity {
         aButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(taskCompleted)
+                    return;
                 if (ansEdit.getText().length() == 0)
                     return;
                 String answer = ansEdit.getText().toString().toLowerCase();
@@ -101,6 +103,8 @@ public class LogicActivity extends Activity {
                     qView.setText(comment);
                     CardActivity.showDialog(true,false,
                             lastTime,attempts,v.getContext());
+                    ru.sibsutis.a6keys.GameScreen.taskCompleted[2]=true;
+                    GameScreen.changeScore(1000,attempts,(int)lastTime/1000);
                 } else {
                     head.setText(getString(R.string.incorrect));
                     head.setTextColor(Color.RED);

@@ -43,6 +43,18 @@ public class GameActivity extends Activity implements View.OnClickListener {
                 .show();
     }
 
+    public void showFinalDialog(){
+        String score = getString(R.string.end_game_score)+" "+(GameScreen.userScore)
+                +"\n"+getString(R.string.score_saved);
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.end_game)
+                .setMessage(score)
+                .setNegativeButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +78,6 @@ public class GameActivity extends Activity implements View.OnClickListener {
         gotoDoorButton.setEnabled(false);
         gotoDoorButton.setText(getString(R.string.startTask));
         gotoDoorButton.setOnClickListener(this);
-
 
         finalDialog = new TextView(this);
         finalDialog.setTextSize(32.0f);

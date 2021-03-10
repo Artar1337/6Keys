@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -19,6 +20,12 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+
+import static ru.sibsutis.a6keys.GameScreen.soundFailed;
+import static ru.sibsutis.a6keys.GameScreen.soundPassed;
+import static ru.sibsutis.a6keys.GameScreen.soundTime;
+import static ru.sibsutis.a6keys.GameScreen.soundVolume;
+import static ru.sibsutis.a6keys.GameScreen.sounds;
 
 
 //наследуем от appCompat чтобы работал dialog класс
@@ -43,7 +50,6 @@ public class CardActivity extends AppCompatActivity {
     boolean taskStarted = false;
     //устанавливается в true после решения третьей фазы
     boolean taskCompleted = false;
-    int userScore;
     int stage = 1;
 
     //класс выбора карточки (список из фигур)
@@ -132,6 +138,8 @@ public class CardActivity extends AppCompatActivity {
                         views[cols * i + j].setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                if(taskCompleted)
+                                    return;
                                 if (!taskStarted)
                                     return;
                                 int tag = Integer.parseInt(v.getTag().toString());
@@ -148,11 +156,10 @@ public class CardActivity extends AppCompatActivity {
         }.start();
     }
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -164,7 +171,6 @@ public class CardActivity extends AppCompatActivity {
 
         loadCards();
         setTable();
-        userScore = 0;
         attempts=0;
 
         TextView time = findViewById(R.id.CardTimer);
@@ -184,7 +190,7 @@ public class CardActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 if (!taskCompleted) {
-                    showDialog(false,false,lastTime,attempts,getApplicationContext());
+                    showDialog(false,false,lastTime,attempts,views[0].getContext());
                 }
             }
         }.start();
@@ -192,8 +198,12 @@ public class CardActivity extends AppCompatActivity {
     }
 
     //этот метод вызывается также и из других activity классов
-    public static void showDialog(boolean won, boolean mistaken, long lastTime, int attempts, Context context) {
+    public static void showDialog(boolean won, boolean mistaken,
+                                  long lastTime, int attempts,
+                                  Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        int soundID;
         if (!won) {
             builder.setTitle(context.getString(R.string.gameOver))
                     .setIcon(R.drawable.wrong)
@@ -207,6 +217,10 @@ public class CardActivity extends AppCompatActivity {
                     });
             if(mistaken){
                 builder.setMessage(context.getString(R.string.tooMuchAttempts));
+                soundID=soundFailed;
+            }
+            else{
+                soundID=soundTime;
             }
         } else {
             builder.setTitle(context.getString(R.string.gameOver))
@@ -221,9 +235,11 @@ public class CardActivity extends AppCompatActivity {
                             dialog.cancel();
                         }
                     });
+            soundID=soundPassed;
         }
         AlertDialog dialog = builder.create();
         dialog.show();
+        sounds.play(soundID,soundVolume,soundVolume,0,0,1.5f);
     }
 
     public boolean taskDone() {
@@ -255,6 +271,8 @@ public class CardActivity extends AppCompatActivity {
                     setTable();
                 } else {
                     showDialog(true,false,lastTime,attempts,this);
+                    ru.sibsutis.a6keys.GameScreen.taskCompleted[4]=true;
+                    GameScreen.changeScore(2900,attempts,(int)lastTime/1000);
                     taskCompleted = true;
                     taskStarted = false;
                 }

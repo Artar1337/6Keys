@@ -22,6 +22,9 @@ import android.view.SurfaceView;
 
 public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
 
+    final static private int BAD_ATTEMPT = -100;
+    final static private int TIME_MULTIPLIER = 10;
+
     final private Bitmap background;
     final private Bitmap door;
     final private Bitmap bigDoor;
@@ -36,23 +39,30 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
     final private int[] keyX = new int[6];
 
 
-    public SoundPool sounds;
-    public int soundDialog,soundStep;
-    public float soundVolume=1.0f;
-    public float musicVolume=1.0f;
+    public static SoundPool sounds;
+    public static int soundDialog, soundStep, soundFailed, soundPassed, soundTime, soundDoor;
+    public static float soundVolume = 1.0f;
+    public static float musicVolume = 1.0f;
+    public static int userScore;
 
     private GameManager gameThread;
     static int currentIndex;
 
     private int W, H, doorX, keyY, bDoorX, bDoorY;
-    private boolean[] taskCompleted = {false, false, false, false, false, false};
-    //private boolean[] taskCompleted = {true, true, true, true, true, true};
+    //public static boolean[] taskCompleted = {false, false, false, false, false, false};
+    public static boolean[] taskCompleted = {true, true, true, true, true, true};
 
     public boolean notIsInEndRoom = true;
 
     public GameActivity gameActivity;
     public Character character;
     public int bigDoorH;
+
+    public static void changeScore(int baseValue,int attempts,int time){
+        userScore+=TIME_MULTIPLIER*time;
+        userScore+=BAD_ATTEMPT*attempts;
+        userScore+=baseValue;
+    }
 
     private Bitmap rotateBitmap(Bitmap src, int degrees) {
         Matrix matrix = new Matrix();
@@ -63,6 +73,8 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
     public GameScreen(Context context, GameActivity activity) {
         super(context);
 
+        userScore=0;
+
         // Make Game Surface focusable so it can handle events.
         this.setFocusable(true);
 
@@ -71,7 +83,11 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
 
         sounds = new SoundPool(50, AudioManager.STREAM_MUSIC, 0);
         soundDialog = sounds.load(context, R.raw.dial, 1);
-        soundStep= sounds.load(context, R.raw.walk, 1);
+        soundStep = sounds.load(context, R.raw.walk, 1);
+        soundFailed = sounds.load(context, R.raw.attempt_end, 1);
+        soundPassed = sounds.load(context, R.raw.passed, 1);
+        soundDoor = sounds.load(context, R.raw.door, 1);
+        soundTime = sounds.load(context, R.raw.time_end, 1);
 
         background = BitmapFactory.decodeResource(getResources(), R.drawable.backgrtile_v2);
         door = BitmapFactory.decodeResource(getResources(), R.drawable.door);
@@ -149,7 +165,7 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
             return 5;
         else if (closeToDoor(x, y, doorX, doorY[2]) && !taskCompleted[5])
             return 6;
-        else if (closeToDoor(x, y, bDoorX+door.getHeight(), bDoorY) && allCompleted())
+        else if (closeToDoor(x, y, bDoorX + door.getHeight(), bDoorY) && allCompleted())
             return 7;
 
         return 0;
@@ -233,7 +249,7 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
         for (int i = 1; i < 6; i++)
             keyX[i] = keyX[i - 1] + keys[i].getWidth() + 12;
 
-        this.character = new Character(this, chBitmap, W/3, 50);
+        this.character = new Character(this, chBitmap, W / 3, 50);
     }
 
     // Implements method of SurfaceHolder.Callback
@@ -258,36 +274,34 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-    public void startNewSpeech(final String[] sentences,final int []who){
+    public void startNewSpeech(final String[] sentences, final int[] who) {
 
         //по 50 мс на букву и 2 мин на общее чтение
-        final int TIME_LIMIT = sentences[currentIndex].length()*50+2000;
-        String currentName="";
+        final int TIME_LIMIT = sentences[currentIndex].length() * 50 + 2000;
+        String currentName = "";
 
-        if(who[currentIndex]==1){
+        if (who[currentIndex] == 1) {
             gameActivity.finalDialog.setTextColor(Color.BLACK);
-            currentName=gameActivity.getString(R.string.father);
-        }
-        else if(who[currentIndex]==2){
+            currentName = gameActivity.getString(R.string.father);
+        } else if (who[currentIndex] == 2) {
             gameActivity.finalDialog.setTextColor(Color.MAGENTA);
-            currentName=gameActivity.getString(R.string.girl);
-        }
-        else if(who[currentIndex]==3){
+            currentName = gameActivity.getString(R.string.girl);
+        } else if (who[currentIndex] == 3) {
             gameActivity.finalDialog.setTextColor(Color.BLUE);
-            currentName=gameActivity.getString(R.string.you);
+            currentName = gameActivity.getString(R.string.you);
         }
 
-        final int startIndex=currentName.length();
+        final int startIndex = currentName.length();
 
 
         new CountDownTimer(TIME_LIMIT, 50) {
 
-            int index=0;
+            int index = 0;
 
             public void onTick(long msUntilFinished) {
-                if(index<=sentences[currentIndex].length()){
+                if (index <= sentences[currentIndex].length()) {
                     gameActivity.finalDialog.setText
-                            (sentences[currentIndex].substring(0,index));
+                            (sentences[currentIndex].substring(0, index));
                     sounds.play(soundDialog, soundVolume, soundVolume, 0, 0, 1.5f);
                     index++;
                 }
@@ -297,41 +311,46 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
             @Override
             public void onFinish() {
                 currentIndex++;
-                if(currentIndex<who.length){
-                    startNewSpeech(sentences,who);
+                if (currentIndex < who.length) {
+                    startNewSpeech(sentences, who);
+                }
+                else{
+                    gameActivity.finalDialog.setAlpha(0.0f);
+                    gameActivity.showFinalDialog();
                 }
             }
         }.start();
     }
 
-    public void startDialogEnding(){
-        String []sentences=new String[11];
-        String father = gameActivity.getString(R.string.father)+" ";
-        String girl = gameActivity.getString(R.string.girl)+" ";
-        String you = gameActivity.getString(R.string.you)+" ";
+    public void startDialogEnding() {
+        String[] sentences = new String[11];
+        String father = gameActivity.getString(R.string.father) + " ";
+        String girl = gameActivity.getString(R.string.girl) + " ";
+        String you = gameActivity.getString(R.string.you) + " ";
         //1 - отец, 2 - дочь, 3 - вы
-        int who[]= {1,1,1,1,2,1,1,1,1,1,3};
-        sentences[0]=father+gameActivity.getString(R.string.ending_part1);
-        sentences[1]=father+gameActivity.getString(R.string.ending_part2);
-        sentences[2]=father+gameActivity.getString(R.string.ending_part3);
-        sentences[3]=father+gameActivity.getString(R.string.ending_part4);
-        sentences[4]=girl+gameActivity.getString(R.string.ending_part4_g);
-        sentences[5]=father+gameActivity.getString(R.string.ending_part5);
-        sentences[6]=father+gameActivity.getString(R.string.ending_part6);
-        sentences[7]=father+gameActivity.getString(R.string.ending_part7);
-        sentences[8]=father+gameActivity.getString(R.string.ending_part8);
-        sentences[9]=father+gameActivity.getString(R.string.ending_part9);
-        sentences[10]=you+gameActivity.getString(R.string.ending_part9_u);
-        currentIndex=0;
+        int who[] = {1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 3};
+        sentences[0] = father + gameActivity.getString(R.string.ending_part1);
+        sentences[1] = father + gameActivity.getString(R.string.ending_part2);
+        sentences[2] = father + gameActivity.getString(R.string.ending_part3);
+        sentences[3] = father + gameActivity.getString(R.string.ending_part4);
+        sentences[4] = girl + gameActivity.getString(R.string.ending_part4_g);
+        sentences[5] = father + gameActivity.getString(R.string.ending_part5);
+        sentences[6] = father + gameActivity.getString(R.string.ending_part6);
+        sentences[7] = father + gameActivity.getString(R.string.ending_part7);
+        sentences[8] = father + gameActivity.getString(R.string.ending_part8);
+        sentences[9] = father + gameActivity.getString(R.string.ending_part9);
+        sentences[10] = you + gameActivity.getString(R.string.ending_part9_u);
+        currentIndex = 0;
 
         new CountDownTimer(2000, 2000) {
             public void onTick(long msUntilFinished) {
             }
+
             @Override
             public void onFinish() {
                 gameActivity.finalDialog.setEnabled(true);
                 gameActivity.finalDialog.setAlpha(1.0f);
-                startNewSpeech(sentences,who);
+                startNewSpeech(sentences, who);
             }
         }.start();
 

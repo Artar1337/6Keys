@@ -62,4 +62,6 @@
     <string name="task_4">Решите задачу с картинкой. У вас одна попытка.</string>
     <string name="task_5">Запомните карточки и восстановите их!</string>
     <string name="task_6">Безошибочно ответьте на 3 вопроса.</string>
+    <string name="to_menu">В меню</string>
+    <string name="score_saved">Ваш счет сохранен.</string>
 </resources>

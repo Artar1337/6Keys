@@ -18,7 +18,7 @@ import java.util.Random;
 
 public class MathActivity extends Activity {
 
-    final private long TIME_LIMIT=60000;
+    final private long TIME_LIMIT=100000;
     final private int MAX_ATTEMPTS=3;
     final private int TASKS_TO_SOLVE=10;
     private boolean taskCompleted=false;
@@ -28,7 +28,6 @@ public class MathActivity extends Activity {
     private TextView time;
     private TextView mathToast;
     private Pair<String,Integer> task;
-    private int userScore;
     private long lastTime;
     private int attempts=0;
     private int correct=0;
@@ -50,18 +49,17 @@ public class MathActivity extends Activity {
         taskView = (TextView) findViewById(R.id.MathTask);
         mathToast = (TextView) findViewById(R.id.MathToast);
         time=(TextView) findViewById(R.id.MathTime);
-
-        userScore=0;
         mathToast.setText("");
         setTask();
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(taskCompleted)
+                    return;
                 if(answerView.getText().length()<1)
                     return;
                 if(answerIsCorrect(answerView.getText().toString(),task.second)) {
-                    scoreChange(true);
                             mathToast.setText(getString(R.string.correct));
                             mathToast.setTextColor(Color.GREEN);
                             correct++;
@@ -69,10 +67,11 @@ public class MathActivity extends Activity {
                         taskCompleted=true;
                         CardActivity.showDialog(true,false,
                                 lastTime,attempts,v.getContext());
+                        ru.sibsutis.a6keys.GameScreen.taskCompleted[0]=true;
+                        GameScreen.changeScore(1000,attempts,(int)lastTime/1000);
                     }
                 }
                 else {
-                    scoreChange(false);
                     mathToast.setText(getString(R.string.incorrect));
                     mathToast.setTextColor(Color.RED);
                     attempts++;
@@ -118,17 +117,6 @@ public class MathActivity extends Activity {
     public static char getRandomOperation() {
         char[] operations = {'+', '-', '*', '/'};
         return operations[getRandomNumber(0, 4)];
-    }
-
-    private void scoreChange(boolean correct)
-    {
-        int correctBonus = 10;
-        int incorrectFine = -10;
-        if(correct){
-            userScore+=correctBonus;
-            return;
-        }
-        userScore+=incorrectFine;
     }
 
     private int solveTask(int v1, int v2, char op) {

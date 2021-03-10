@@ -129,6 +129,8 @@ public class QuestionsActivity extends Activity implements View.OnClickListener 
     @Override
     public void onClick(View v) {
 
+        if(taskCompleted)
+            return;
         boolean found = (Integer.parseInt(v.getTag().toString()) == correctAnswer);
         if (found) {
             head.setText(getString(R.string.correct));
@@ -152,6 +154,8 @@ public class QuestionsActivity extends Activity implements View.OnClickListener 
                 taskCompleted = true;
                 CardActivity.showDialog(true, false,
                         lastTime, 0, v.getContext());
+                ru.sibsutis.a6keys.GameScreen.taskCompleted[5]=true;
+                GameScreen.changeScore(1500,0,(int)lastTime/1000);
             }
         } else {
             head.setText(getString(R.string.incorrect));
