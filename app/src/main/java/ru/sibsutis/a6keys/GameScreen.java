@@ -229,9 +229,9 @@ public class GameScreen extends SurfaceView implements SurfaceHolder.Callback {
         } else {
             canvas.drawBitmap(carpet, 0, 0, null);
             canvas.drawBitmap(carpet, carpet.getWidth(), 0, null);
-            canvas.drawBitmap(father, carpet.getWidth() / 2.0f,
+            canvas.drawBitmap(father, carpet.getWidth() / 4.0f,
                     carpet.getHeight() / 2.0f, null);
-            canvas.drawBitmap(girl, 3 * carpet.getWidth() / 2.0f,
+            canvas.drawBitmap(girl, carpet.getWidth() / 3.5f + father.getWidth(),
                     carpet.getHeight() / 2.0f, null);
             canvas.drawBitmap(character.getCharactersBack(), carpet.getWidth(),
                     H / 2.0f, null);
